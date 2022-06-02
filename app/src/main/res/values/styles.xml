@@ -4,4 +4,12 @@
 
     </style>
 
+    <style name="textStyle">
+        <item name="android:layout_width">68dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
 </resources>

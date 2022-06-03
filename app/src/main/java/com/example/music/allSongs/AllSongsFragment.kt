@@ -1,6 +1,7 @@
 package com.example.music.allSongs
 
 import android.app.SearchManager
+import android.content.Context
 import android.content.Context.SEARCH_SERVICE
 import android.os.Bundle
 import android.view.*
@@ -22,6 +23,7 @@ class AllSongsFragment: Fragment() {
     ): View? {
         val binding= DataBindingUtil.inflate<AllSongsFragmentBinding>(inflater,R.layout.all_songs_fragment,container,false)
         return  binding.root
+
     }
 
 

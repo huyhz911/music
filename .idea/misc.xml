@@ -4,12 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.2838541666666667" />
+        <entry key="app/src/main/res/drawable/play_pause_button.xml" value="0.262" />
         <entry key="app/src/main/res/layout-v21/all_songs_fragment.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/all_songs_fragment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_all_songs.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_music.xml" value="0.1828125" />
         <entry key="app/src/main/res/layout/list_item_song.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/song_info_popup.xml" value="0.5" />
         <entry key="app/src/main/res/layout/view_item.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/menu/menu_all_songs.xml" value="0.33" />
         <entry key="app/src/main/res/menu/menu_list_songs.xml" value="0.15" />

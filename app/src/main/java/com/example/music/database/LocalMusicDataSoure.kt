@@ -7,7 +7,7 @@ import android.provider.MediaStore
 import android.util.Log
 
 
-class LocalMusicDataSoures {
+class LocalMusicDataSoure {
     fun getSong(activity: Activity) {
         val songs: ArrayList<SongInfo> = ArrayList()
 

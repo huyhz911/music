@@ -35,76 +35,31 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="409dp"
-            android:layout_height="673dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
         <RelativeLayout
-            android:layout_width="412dp"
-            android:layout_height="96dp"
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <include
+                android:id="@+id/songinfopopup"
+                layout="@layout/song_info_popup"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:visibility="visible" />
 
-                <TextView
-                    android:id="@+id/songNamePopup"
-                    style="@style/textStyle"
-                    android:layout_width="231dp"
-                    android:layout_height="51dp"
-                    android:text="TextView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.502"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView4"
-                    style="@style/textStyle"
-                    android:layout_width="176dp"
-                    android:layout_height="28dp"
-                    android:text="TextView"
-                    android:textSize="14dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.385"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/songNamePopup"
-                    app:layout_constraintVertical_bias="0.058" />
-
-                <ImageView
-                    android:id="@+id/play"
-                    android:layout_width="49dp"
-                    android:layout_height="46dp"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.292"
-                    app:layout_constraintStart_toEndOf="@+id/songNamePopup"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_media_play_light" />
-
-                <ImageView
-                    android:id="@+id/stop"
-                    android:layout_width="49dp"
-                    android:layout_height="46dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.292"
-                    app:layout_constraintStart_toEndOf="@+id/songNamePopup"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_media_pause_light" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

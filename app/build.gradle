@@ -50,5 +50,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     //recyclerView
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    //viewModel
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
 
 }

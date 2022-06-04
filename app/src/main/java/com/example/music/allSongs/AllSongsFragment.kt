@@ -1,21 +1,13 @@
 package com.example.music.allSongs
 
-import android.app.SearchManager
-import android.content.Context
-import android.content.Context.SEARCH_SERVICE
 import android.os.Bundle
 import android.view.*
-import android.widget.TextView
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.example.music.ActivityMusic
+import androidx.lifecycle.ViewModelProvider
 import com.example.music.R
+import com.example.music.database.LocalMusicDataSoure
 import com.example.music.databinding.AllSongsFragmentBinding
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 
 class AllSongsFragment: Fragment() {
@@ -25,7 +17,13 @@ class AllSongsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+
         val binding= DataBindingUtil.inflate<AllSongsFragmentBinding>(inflater,R.layout.all_songs_fragment,container,false)
+        val adapter = SongAdapter()
+        binding.listSong.adapter = adapter
+        val dataSource = LocalMusicDataSoure()
+        val viewModelFactory = AllSongViewModelFactory(dataSource)
+        val sleepQualityViewModel = ViewModelProvider(this, viewModelFactory).get(AllSongViewModel::class.java)
         return  binding.root
 
     }

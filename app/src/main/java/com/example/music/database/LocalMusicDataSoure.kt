@@ -5,10 +5,11 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import com.example.music.MyApplication
 
 
 class LocalMusicDataSoure {
-    fun getSong(activity: Activity) {
+  public  fun getSong(): ArrayList<SongInfo> {
         val songs: ArrayList<SongInfo> = ArrayList()
 
         val projection = arrayOf(
@@ -25,7 +26,8 @@ class LocalMusicDataSoure {
         var cursor: Cursor? = null
         try {
             val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            cursor = activity.contentResolver.query(uri,projection,null,null, sortOrder)
+            cursor =
+                MyApplication.instance?.contentResolver?.query(uri,projection,null,null, sortOrder)
             if (cursor != null) {
                 cursor.moveToFirst()
                 val position = 1
@@ -47,5 +49,6 @@ class LocalMusicDataSoure {
                 cursor.close()
             }
         }
+      return songs;
     }
 }

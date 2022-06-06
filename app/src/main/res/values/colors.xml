@@ -10,4 +10,5 @@
     <color name="toolbarColor">#FF5722</color>
     <color name="backgroundColor">#FF5722</color>
     <color name="textTitleColor">#F8F5F5</color>
+    <color name="statusbar">#BD4200</color>
 </resources>

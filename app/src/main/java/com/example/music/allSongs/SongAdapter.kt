@@ -2,23 +2,16 @@ package com.example.music.allSongs
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.music.database.SongInfo
 import com.example.music.R
+import com.example.music.databinding.ListItemSongBinding
 
 class SongAdapter: ListAdapter<SongInfo,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {
-//    var data = ArrayList<SongInfo>()
-//    set(value) {
-//        field = value
-//        notifyDataSetChanged()
-//    }
-//    override fun getItemCount() = data.size
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
        val item = getItem(position)
@@ -29,14 +22,14 @@ class SongAdapter: ListAdapter<SongInfo,SongAdapter.SongViewHolder>(SongInfoDiff
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_song,parent,false) as ConstraintLayout
-        return SongViewHolder(view)
+        val binding = ListItemSongBinding.inflate(layoutInflater,parent,false)
+        return SongViewHolder(binding)
 
     }
-    class SongViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val songPosition : TextView = itemView.findViewById(R.id.position)
-        val songName: TextView = itemView.findViewById(R.id.songName)
-        val songDuration: TextView = itemView.findViewById(R.id.duration)
+    class SongViewHolder(binding: ListItemSongBinding): RecyclerView.ViewHolder(binding.root){
+        val songPosition : TextView = binding.position
+        val songName: TextView = binding.songName
+        val songDuration: TextView = binding.duration
 
     }
 }

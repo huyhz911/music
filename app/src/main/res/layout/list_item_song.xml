@@ -15,7 +15,7 @@
 
 
     <TextView
-        android:id="@+id/albumID"
+        android:id="@+id/position"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"

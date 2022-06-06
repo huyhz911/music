@@ -19,11 +19,11 @@ class AllSongsFragment: Fragment() {
     ): View? {
 
         val binding= DataBindingUtil.inflate<AllSongsFragmentBinding>(inflater,R.layout.all_songs_fragment,container,false)
-        val adapter = SongAdapter()
-        binding.listSong.adapter = adapter
         val dataSource = LocalMusicDataSoure()
         val viewModelFactory = AllSongViewModelFactory(dataSource)
         val sleepQualityViewModel = ViewModelProvider(this, viewModelFactory).get(AllSongViewModel::class.java)
+        val adapter = SongAdapter()
+        binding.listSong.adapter = adapter
         return  binding.root
 
     }

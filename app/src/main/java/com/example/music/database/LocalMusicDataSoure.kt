@@ -1,6 +1,5 @@
 package com.example.music.database
 
-import android.app.Activity
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
@@ -8,9 +7,10 @@ import android.util.Log
 import com.example.music.MyApplication
 
 
-class LocalMusicDataSoure {
-  public  fun getSong(): ArrayList<SongInfo> {
+class LocalMusicDataSource {
+    fun getSong(): ArrayList<SongInfo> {
         val songs: ArrayList<SongInfo> = ArrayList()
+
 
         val projection = arrayOf(
             MediaStore.Audio.Media.TITLE,

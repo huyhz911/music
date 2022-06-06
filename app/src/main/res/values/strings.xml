@@ -4,5 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="titleToolBar">Music</string>
     <string name="search">Search</string>
+    <string name="seconds_length">%d seconds on %s</string>
+    <string name="minutes_length">% minutes on %s</string>
 
 </resources>

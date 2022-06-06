@@ -8,16 +8,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.music.database.SongInfo
-import com.example.music.R
 import com.example.music.databinding.ListItemSongBinding
 
+
 class SongAdapter: ListAdapter<SongInfo,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {
+
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
        val item = getItem(position)
         holder.songName.text = item.getTitle()
         holder.songPosition.text = (position + 1).toString()
-        holder.songDuration.text = item.getDuration().toString()
+        val timeS = (item.getDuration()/1000).toInt()
+        val min = (timeS / 60)
+        val sec = (timeS % 60)
+        holder.songDuration.text = ("$min: $sec").toString()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {

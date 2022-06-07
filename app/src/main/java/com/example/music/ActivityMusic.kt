@@ -18,6 +18,7 @@ class ActivityMusic : AppCompatActivity() {
        setContentView(R.layout.activity_main)
        val window: Window = this@ActivityMusic.window
         window.statusBarColor= ContextCompat.getColor(this@ActivityMusic,R.color.statusbar)
+
     }
 
 

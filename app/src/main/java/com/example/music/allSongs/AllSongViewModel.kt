@@ -11,5 +11,7 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
         listSong.value = localMusicDataSource.getSong()
 
     }
+    fun getAlbumArt(){
 
+    }
 }

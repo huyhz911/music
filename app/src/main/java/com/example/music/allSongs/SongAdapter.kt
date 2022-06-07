@@ -1,6 +1,7 @@
 package com.example.music.allSongs
 
 import android.annotation.SuppressLint
+import android.icu.util.Calendar
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.music.database.SongInfo
 import com.example.music.databinding.ListItemSongBinding
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 
 class SongAdapter: ListAdapter<SongInfo,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {

@@ -8,5 +8,14 @@
         android:id="@+id/allSongsFragment"
         android:name="com.example.music.allSongs.AllSongsFragment"
         android:label="AllSongsFragment"
-        tools:layout="@layout/all_songs_fragment"/>
+        tools:layout="@layout/all_songs_fragment">
+        <action
+            android:id="@+id/action_allSongsFragment_to_mediaPlaybackFragment2"
+            app:destination="@id/mediaPlaybackFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mediaPlaybackFragment"
+        android:name="com.example.music.mediaPlay.MediaPlaybackFragment"
+        android:label="MediaPlaybackFragment"
+        tools:layout="@layout/media_play_back_fragment"/>
 </navigation>

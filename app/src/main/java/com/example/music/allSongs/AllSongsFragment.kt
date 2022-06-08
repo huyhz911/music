@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,7 @@ import com.example.music.database.SongInfo
 import com.example.music.databinding.AllSongsFragmentBinding
 // líst template , author file ,
 
-class AllSongsFragment: Fragment() {
+class  AllSongsFragment: Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +38,7 @@ class AllSongsFragment: Fragment() {
                 adapter.submitList(it)
             }
         })
+        binding.relativeLayout.setOnClickListener { view: View -> view.findNavController().navigate(R.id.action_allSongsFragment_to_mediaPlaybackFragment2) }
 
         return  binding.root
 

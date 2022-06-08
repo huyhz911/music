@@ -2,6 +2,11 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="mediaPlayFragment"
+            type="com.example.music.mediaPlay.MediaPlaybackFragment" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mediaPlayback"
@@ -37,7 +42,7 @@
                     app:srcCompat="@drawable/ic_menu_moreoverflow_card_dark_active" />
 
                 <ImageView
-                    android:id="@+id/imageView7"
+                    android:id="@+id/backListSong"
                     android:layout_width="25dp"
                     android:layout_height="30dp"
                     android:layout_alignParentBottom="true"

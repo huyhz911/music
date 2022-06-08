@@ -17,5 +17,9 @@
         android:id="@+id/mediaPlaybackFragment"
         android:name="com.example.music.mediaPlay.MediaPlaybackFragment"
         android:label="MediaPlaybackFragment"
-        tools:layout="@layout/media_play_back_fragment"/>
+        tools:layout="@layout/media_play_back_fragment">
+        <action
+            android:id="@+id/action_mediaPlaybackFragment_to_allSongsFragment"
+            app:destination="@id/allSongsFragment" />
+    </fragment>
 </navigation>

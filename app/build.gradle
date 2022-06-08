@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
 }
+apply plugin: 'androidx.navigation.safeargs'
+
 
 android {
     compileSdk 32
@@ -46,6 +48,7 @@ dependencies {
     //navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
     implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
+//    implementation "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2"
     //toolbar
     implementation 'androidx.appcompat:appcompat:1.4.1'
     //recyclerView

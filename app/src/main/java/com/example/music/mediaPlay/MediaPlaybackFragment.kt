@@ -23,7 +23,7 @@ class MediaPlaybackFragment: Fragment() {
     ): View? {
         val binding= DataBindingUtil.inflate<MediaPlayBackFragmentBinding>(inflater,
             R.layout.media_play_back_fragment,container,false)
-        binding.backListSong.setOnClickListener { view: View -> view.findNavController().navigate(MediaPlaybackFragmentDirections.actionMediaPlaybackFragmentToAllSongsFragment())}
+        binding.backListSong?.setOnClickListener { view: View -> view.findNavController().navigate(MediaPlaybackFragmentDirections.actionMediaPlaybackFragmentToAllSongsFragment())}
         return binding.root
     }
 }

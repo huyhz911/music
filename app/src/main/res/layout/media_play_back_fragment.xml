@@ -198,7 +198,7 @@
         <SeekBar
             android:id="@+id/seekBar3"
             android:layout_width="421dp"
-            android:layout_height="19dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="75dp"
             android:progressTint="@color/backgroundColor"
             android:thumbTint="@color/backgroundColor"

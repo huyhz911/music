@@ -5,8 +5,8 @@
     tools:ignore="MissingDefaultResource">
     <data>
         <variable
-            name="allSongsLandscape"
-            type="com.example.music.allSongs.AllSongViewModel" />
+            name="mediaPlaybackViewModel"
+            type="com.example.music.mediaPlay.MediaPlaybackViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,21 +34,18 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_song_land"
-            android:layout_width="match_parent"
+            android:id="@+id/list_song"
+            android:layout_width="350dp"
             android:layout_height="0dp"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
-            android:layout_width="450dp"
+            android:layout_width="380dp"
             android:layout_height="0dp"
             android:background="@drawable/bg_default_album_art"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -137,6 +134,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/relativeLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="#85FFFFFF"
@@ -152,8 +150,8 @@
                         android:id="@+id/toggleButton2"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginStart="125dp"
-                        android:layout_marginLeft="125dp"
+                        android:layout_marginStart="75dp"
+                        android:layout_marginLeft="75dp"
                         android:background="@drawable/like"
                         android:textOff=""
                         android:textOn=""
@@ -199,8 +197,8 @@
                         android:id="@+id/toggleButton3"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginEnd="125dp"
-                        android:layout_marginRight="125dp"
+                        android:layout_marginEnd="75dp"
+                        android:layout_marginRight="75dp"
                         android:background="@drawable/dis_like"
                         android:textOff=""
                         android:textOn=""
@@ -226,6 +224,18 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </RelativeLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="403dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:progressTint="@color/backgroundColor"
+                android:thumbTint="@color/backgroundColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

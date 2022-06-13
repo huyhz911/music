@@ -6,10 +6,12 @@ import android.provider.MediaStore
 import android.util.Log
 import com.example.music.MyApplication
 
-
+/**
+ * Created by Bkav HuyNgQe on 07/06/2022.
+ */
 class LocalMusicDataSource {
-    fun getSong(): ArrayList<SongInfo> {
-        val songs: ArrayList<SongInfo> = ArrayList()
+    fun getSong(): ArrayList<Song> {
+        val songs: ArrayList<Song> = ArrayList()
 
 
         val projection = arrayOf(
@@ -32,7 +34,7 @@ class LocalMusicDataSource {
                 cursor.moveToFirst()
                 val position = 1
                 while (!cursor.isAfterLast) {
-                    val song = SongInfo(cursor.getLong(6),cursor.getString(0),cursor.getString(5),cursor.getString(1),cursor.getLong(4))
+                    val song = Song(cursor.getLong(6),cursor.getString(0),cursor.getString(5),cursor.getString(1),cursor.getLong(4))
 //                    song.setTitle(cursor.getString(0))
 //                    song.setDuration(cursor.getLong(4))
 //                    song.setArtist(cursor.getString(1))

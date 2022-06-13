@@ -1,6 +1,6 @@
 package com.example.music.allSongs
 
-import android.annotation.SuppressLint
+
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -8,14 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.music.R
 import com.example.music.database.LocalMusicDataSource
-import com.example.music.database.SongInfo
 import com.example.music.databinding.AllSongsFragmentBinding
 // líst template , author file ,
+/**
+ * Created by Bkav HuyNgQe on 07/06/2022.
+ */
 
 class  AllSongsFragment: Fragment() {
 

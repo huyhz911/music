@@ -1,10 +1,12 @@
 package com.example.music.database
-
-class SongInfo( private  var songID: Long,
-                private  var songName: String,
-                private  var albumName: String,
-                private  var artists: String,
-                private  var duration: Long ) {
+/**
+ * Created by Bkav HuyNgQe on 07/06/2022.
+ */
+class Song(private  var songID: Long,
+           private  var songName: String,
+           private  var albumName: String,
+           private  var artists: String,
+           private  var duration: Long ) {
 
     fun setTitle(songName: String) {
         this.songName = songName

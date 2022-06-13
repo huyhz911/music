@@ -7,11 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.music.database.SongInfo
+import com.example.music.database.Song
 import com.example.music.databinding.ListItemSongBinding
 
-
-class SongAdapter: ListAdapter<SongInfo,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {
+/**
+ * Created by Bkav HuyNgQe on 07/06/2022.
+ */
+class SongAdapter: ListAdapter<Song,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
@@ -37,13 +39,13 @@ class SongAdapter: ListAdapter<SongInfo,SongAdapter.SongViewHolder>(SongInfoDiff
 
     }
 }
-class SongInfoDiffCallback: DiffUtil.ItemCallback<SongInfo>(){
-    override fun areItemsTheSame(oldItem: SongInfo, newItem: SongInfo): Boolean {
+class SongInfoDiffCallback: DiffUtil.ItemCallback<Song>(){
+    override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
         return  oldItem.getAlbumId() == newItem.getAlbumId()
     }
 
     @SuppressLint("DiffUtilEquals")
-    override fun areContentsTheSame(oldItem: SongInfo, newItem: SongInfo): Boolean {
+    override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
         return oldItem == newItem
     }
 

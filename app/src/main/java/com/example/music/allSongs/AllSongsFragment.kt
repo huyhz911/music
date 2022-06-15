@@ -1,6 +1,8 @@
 package com.example.music.allSongs
 
 
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -8,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.example.music.MyApplication
 import com.example.music.R
 import com.example.music.database.LocalMusicDataSource
 import com.example.music.databinding.AllSongsFragmentBinding
@@ -30,7 +33,8 @@ class  AllSongsFragment: Fragment() {
         val allSongViewModel = ViewModelProvider(this, viewModelFactory).get(AllSongViewModel::class.java)
         binding.lifecycleOwner= this
         binding.allSongsViewModel = allSongViewModel
-        val adapter = SongAdapter()
+
+        val adapter = SongAdapter(SongListener { songId -> allSongViewModel.playMusic(songId)  })
         binding.listSong.adapter = adapter
         allSongViewModel.listSong.observe(viewLifecycleOwner, Observer {
             it?.let {

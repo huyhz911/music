@@ -13,7 +13,7 @@ import com.example.music.databinding.ListItemSongBinding
 /**
  * Created by Bkav HuyNgQe on 07/06/2022.
  */
-class SongAdapter: ListAdapter<Song,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {
+class SongAdapter(val clickListener: SongListener): ListAdapter<Song,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
@@ -24,6 +24,8 @@ class SongAdapter: ListAdapter<Song,SongAdapter.SongViewHolder>(SongInfoDiffCall
         val min = (timeS / 60)
         val sec = (timeS % 60)
         holder.songDuration.text = ("$min: $sec").toString()
+        holder.bind(clickListener)
+        holder.binding.song = item
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
@@ -32,10 +34,13 @@ class SongAdapter: ListAdapter<Song,SongAdapter.SongViewHolder>(SongInfoDiffCall
         return SongViewHolder(binding)
 
     }
-    class SongViewHolder(binding: ListItemSongBinding): RecyclerView.ViewHolder(binding.root){
+    class SongViewHolder(val binding: ListItemSongBinding): RecyclerView.ViewHolder(binding.root){
         val songPosition : TextView = binding.position
         val songName: TextView = binding.songName
         val songDuration: TextView = binding.duration
+        fun bind(clickListener: SongListener){
+            binding.clickListener = clickListener
+        }
 
     }
 }
@@ -48,6 +53,8 @@ class SongInfoDiffCallback: DiffUtil.ItemCallback<Song>(){
     override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
         return oldItem == newItem
     }
-
+}
+class SongListener(val clickListener: (songId: Long) -> Unit){
+    fun onClick(song: Song)= clickListener(song.getAlbumId())
 }
 

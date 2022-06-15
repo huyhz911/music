@@ -21,7 +21,8 @@ class LocalMusicDataSource {
             MediaStore.Audio.Media.DISPLAY_NAME,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.ALBUM,
-            MediaStore.Audio.Media.ALBUM_ID
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media._ID
         )
         val sortOrder = MediaStore.Audio.AudioColumns.TITLE + " COLLATE LOCALIZED ASC"
 
@@ -34,7 +35,12 @@ class LocalMusicDataSource {
                 cursor.moveToFirst()
                 val position = 1
                 while (!cursor.isAfterLast) {
-                    val song = Song(cursor.getLong(6),cursor.getString(0),cursor.getString(5),cursor.getString(1),cursor.getLong(4))
+                    val song = Song(cursor.getLong(7),
+                        cursor.getString(0),
+                        cursor.getString(5),
+                        cursor.getString(1),
+                        cursor.getLong(4),
+                        cursor.getString(2))
 //                    song.setTitle(cursor.getString(0))
 //                    song.setDuration(cursor.getLong(4))
 //                    song.setArtist(cursor.getString(1))

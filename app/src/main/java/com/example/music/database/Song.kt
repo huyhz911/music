@@ -6,7 +6,8 @@ class Song(private  var songID: Long,
            private  var songName: String,
            private  var albumName: String,
            private  var artists: String,
-           private  var duration: Long ) {
+           private  var duration: Long,
+           private  var data: String) {
 
     fun setTitle(songName: String) {
         this.songName = songName
@@ -14,6 +15,15 @@ class Song(private  var songID: Long,
     fun getTitle():String{
         return  this.songName
     }
+
+    fun setData(data: String) {
+        this.data = data
+    }
+    fun getData():String{
+        return  this.data
+    }
+
+
 
     fun setAlbumId(songID: Long) {
         this.songID = songID

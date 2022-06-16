@@ -29,9 +29,11 @@ class  AllSongsFragment: Fragment() {
         binding.lifecycleOwner= this
         binding.allSongsViewModel = allSongViewModel
 
-        val adapter = SongAdapter(SongListener {
-                songId -> allSongViewModel.playMusic(songId)
-                 binding.imageAlbum.setImageBitmap(allSongViewModel.getCoverPicture(songId))
+        val adapter = SongAdapter(SongListener { songId ->
+            allSongViewModel.playMusic(songId)
+            binding.imageAlbum.setImageBitmap(allSongViewModel.getCoverPicture(songId))
+            binding.textSongName.text = allSongViewModel.getSongName(songId)
+            binding.textAuthor.text = allSongViewModel.getSongAuthor(songId)
         })
         binding.listSong.adapter = adapter
         allSongViewModel.listSong.observe(viewLifecycleOwner, Observer {

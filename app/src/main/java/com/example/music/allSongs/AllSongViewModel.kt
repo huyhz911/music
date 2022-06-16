@@ -53,5 +53,26 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
         }
         return  art
     }
+    // lay ten bai hat
+    fun getSongName(id:Long):String{
+        var songName: String ="Khong xac dinh"
+        listSong.value?.forEach { song ->
+            if (song.getAlbumId()==id){
+                songName =song.getTitle()
+            }
+        }
+        return  songName
+    }
+    //lay ten tac gia
+    fun getSongAuthor(id:Long):String{
+        var songAuthor: String ="Khong xac dinh"
+        listSong.value?.forEach { song ->
+            if (song.getAlbumId()==id){
+                songAuthor =song.getArtist()
+            }
+        }
+        return  songAuthor
+    }
+
 
 }

@@ -55,12 +55,72 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent">
 
-            <include
-                android:id="@+id/songInfoPopup"
-                layout="@layout/song_info_popup"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible" />
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/imageAlbum"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/bg_default_album_art"
+                    tools:ignore="ImageContrastCheck" />
+
+                <TextView
+                    android:id="@+id/textSongName"
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="TextView"
+                    app:layout_constraintEnd_toStartOf="@+id/toggleButton"
+                    app:layout_constraintHorizontal_bias="0.089"
+                    app:layout_constraintStart_toEndOf="@+id/imageAlbum"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textAuthor"
+                    style="@style/textTime"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                    app:layout_constraintEnd_toStartOf="@+id/toggleButton"
+                    app:layout_constraintHorizontal_bias="0.078"
+                    app:layout_constraintStart_toEndOf="@+id/imageAlbum"
+                    app:layout_constraintTop_toBottomOf="@+id/textSongName" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@drawable/play_pause_button"
+                    android:textOff=""
+                    android:textOn=""
+                    app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="71dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </RelativeLayout>
 

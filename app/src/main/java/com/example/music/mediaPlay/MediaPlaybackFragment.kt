@@ -26,7 +26,7 @@ class MediaPlaybackFragment: Fragment() {
     ): View? {
         val binding= DataBindingUtil.inflate<MediaPlayBackFragmentBinding>(inflater,
             R.layout.media_play_back_fragment,container,false)
-        binding.backListSong?.setOnClickListener { view: View -> view.findNavController().navigate(MediaPlaybackFragmentDirections.actionMediaPlaybackFragmentToAllSongsFragment())}
+        binding.imageBackListSong?.setOnClickListener { view: View -> view.findNavController().navigate(MediaPlaybackFragmentDirections.actionMediaPlaybackFragmentToAllSongsFragment())}
         val mediaDataSource = LocalMusicDataSource()
         val mediaViewModelFactory = MediaPlaybackViewModelFactory(mediaDataSource)
         val mediaViewModel = ViewModelProvider(this, mediaViewModelFactory).get(MediaPlaybackViewModel::class.java)

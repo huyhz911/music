@@ -54,7 +54,7 @@ class SongInfoDiffCallback: DiffUtil.ItemCallback<Song>(){
         return oldItem == newItem
     }
 }
-class SongListener(val clickListener: (songId: Long) -> Unit){
+class SongListener(val clickListener: (songId: Int) -> Unit){
     fun onClick(song: Song)= clickListener(song.getAlbumId())
 }
 

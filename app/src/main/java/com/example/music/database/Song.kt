@@ -2,7 +2,7 @@ package com.example.music.database
 /**
  * Created by Bkav HuyNgQe on 07/06/2022.
  */
-class Song(private  var songID: Long,
+class Song(private  var songID: Int,
            private  var songName: String,
            private  var albumName: String,
            private  var artists: String,
@@ -25,10 +25,10 @@ class Song(private  var songID: Long,
 
 
 
-    fun setAlbumId(songID: Long) {
+    fun setAlbumId(songID: Int) {
         this.songID = songID
     }
-    fun getAlbumId():Long{
+    fun getAlbumId():Int{
         return this.songID
     }
 

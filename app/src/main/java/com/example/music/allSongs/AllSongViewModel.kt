@@ -24,7 +24,7 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
 
     }
     // play music
-    fun playMusic(id: Long){
+    fun playMusic(id: Int){
         listSong.value?.forEach { song ->
             if (song.getAlbumId()==id){
                 val uri = Uri.parse(song.getData())
@@ -39,7 +39,7 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
         mediaPlayer.pause()
     }
     // lay anh bia album
-    fun getCoverPicture(id: Long): Bitmap{
+    fun getCoverPicture(id: Int): Bitmap{
         var art: Bitmap = BitmapFactory.decodeResource(MyApplication.getContext().resources , R.drawable.bg_default_album_art)
         listSong.value?.forEach { song ->
             if (song.getAlbumId()==id){
@@ -54,7 +54,7 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
         return  art
     }
     // lay ten bai hat
-    fun getSongName(id:Long):String{
+    fun getSongName(id:Int):String{
         var songName: String ="Khong xac dinh"
         listSong.value?.forEach { song ->
             if (song.getAlbumId()==id){
@@ -64,7 +64,7 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
         return  songName
     }
     //lay ten tac gia
-    fun getSongAuthor(id:Long):String{
+    fun getSongAuthor(id:Int):String{
         var songAuthor: String ="Khong xac dinh"
         listSong.value?.forEach { song ->
             if (song.getAlbumId()==id){

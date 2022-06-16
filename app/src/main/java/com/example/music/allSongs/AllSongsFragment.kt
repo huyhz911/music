@@ -28,12 +28,13 @@ class  AllSongsFragment: Fragment() {
         val allSongViewModel = ViewModelProvider(this, viewModelFactory).get(AllSongViewModel::class.java)
         binding.lifecycleOwner= this
         binding.allSongsViewModel = allSongViewModel
-
         val adapter = SongAdapter(SongListener { songId ->
             allSongViewModel.playMusic(songId)
             binding.imageAlbum.setImageBitmap(allSongViewModel.getCoverPicture(songId))
             binding.textSongName.text = allSongViewModel.getSongName(songId)
             binding.textAuthor.text = allSongViewModel.getSongAuthor(songId)
+            binding.songPopUp.visibility = View.VISIBLE
+            binding.togglePlayPause.isChecked = true
         })
         binding.listSong.adapter = adapter
         allSongViewModel.listSong.observe(viewLifecycleOwner, Observer {

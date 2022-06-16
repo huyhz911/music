@@ -42,7 +42,7 @@
                     app:srcCompat="@drawable/ic_menu_moreoverflow_card_dark_active" />
 
                 <ImageView
-                    android:id="@+id/backListSong"
+                    android:id="@+id/imageBackListSong"
                     android:layout_width="25dp"
                     android:layout_height="30dp"
                     android:layout_alignParentBottom="true"
@@ -53,7 +53,7 @@
                     app:srcCompat="@drawable/ic_queue_dark" />
 
                 <ImageView
-                    android:id="@+id/imageView8"
+                    android:id="@+id/imageAlbumMediaPlay"
                     android:layout_width="61dp"
                     android:layout_height="60dp"
                     android:layout_alignParentStart="true"
@@ -66,7 +66,7 @@
                     app:srcCompat="@drawable/bg_default_album_art" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/textSongNameMediaPlay"
                     style="@style/textStyle"
                     android:layout_width="198dp"
                     android:layout_height="wrap_content"
@@ -76,18 +76,18 @@
                     android:layout_marginTop="20dp"
                     android:layout_toStartOf="@+id/imageView7"
                     android:layout_toLeftOf="@+id/imageView7"
-                    android:layout_toEndOf="@+id/imageView8"
-                    android:layout_toRightOf="@+id/imageView8"
+                    android:layout_toEndOf="@+id/imageAlbumMediaPlay"
+                    android:layout_toRightOf="@+id/imageAlbumMediaPlay"
                     android:text="TextView"
-                    app:layout_constraintBottom_toTopOf="@+id/textView4"
+                    app:layout_constraintBottom_toTopOf="@+id/textAuthorMediaPlay"
                     app:layout_constraintEnd_toStartOf="@+id/imageView7"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/imageView8"
+                    app:layout_constraintStart_toEndOf="@+id/imageAlbumMediaPlay"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/textAuthorMediaPlay"
                     style="@style/textTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,11 +97,11 @@
                     android:layout_marginBottom="16dp"
                     android:layout_toStartOf="@+id/imageView7"
                     android:layout_toLeftOf="@+id/imageView7"
-                    android:layout_toEndOf="@+id/imageView8"
-                    android:layout_toRightOf="@+id/imageView8"
+                    android:layout_toEndOf="@+id/imageAlbumMediaPlay"
+                    android:layout_toRightOf="@+id/imageAlbumMediaPlay"
                     android:text="TextView"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView8" />
+                    app:layout_constraintStart_toEndOf="@+id/imageAlbumMediaPlay" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </RelativeLayout>
@@ -219,7 +219,7 @@
         </RelativeLayout>
 
         <SeekBar
-            android:id="@+id/seekBar3"
+            android:id="@+id/seekBarMediaPlay"
             android:layout_width="421dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="75dp"

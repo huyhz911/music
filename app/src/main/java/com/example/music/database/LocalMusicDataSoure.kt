@@ -35,17 +35,12 @@ class LocalMusicDataSource {
                 cursor.moveToFirst()
                 val position = 1
                 while (!cursor.isAfterLast) {
-                    val song = Song(cursor.getLong(7),
+                    val song = Song(cursor.getInt(7),
                         cursor.getString(0),
                         cursor.getString(5),
                         cursor.getString(1),
                         cursor.getLong(4),
                         cursor.getString(2))
-//                    song.setTitle(cursor.getString(0))
-//                    song.setDuration(cursor.getLong(4))
-//                    song.setArtist(cursor.getString(1))
-//                    song.setAlbumName(cursor.getString(5))
-//                    song.setAlbumId(cursor.getLong(6))
                     songs.add(song)
                     cursor.moveToNext()
                 }

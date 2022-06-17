@@ -21,5 +21,9 @@
         <action
             android:id="@+id/action_mediaPlaybackFragment_to_allSongsFragment"
             app:destination="@id/allSongsFragment" />
+        <argument
+            android:name="songID"
+            app:argType="integer" />
+
     </fragment>
 </navigation>

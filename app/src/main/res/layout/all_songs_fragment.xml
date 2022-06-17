@@ -5,7 +5,12 @@
     android:visibility="visible">
 
     <data>
-
+        <variable
+            name="song"
+            type="com.example.music.database.Song" />
+        <variable
+            name="clickListener"
+            type="com.example.music.allSongs.SongListener" />
         <variable
             name="allSongsViewModel"
             type="com.example.music.allSongs.AllSongViewModel" />
@@ -61,7 +66,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:visibility="gone">
-
                 <ImageView
                     android:id="@+id/imageAlbum"
                     android:layout_width="50dp"

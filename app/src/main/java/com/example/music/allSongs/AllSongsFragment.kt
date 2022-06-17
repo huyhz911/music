@@ -16,6 +16,7 @@ import com.example.music.databinding.AllSongsFragmentBinding
 
 class  AllSongsFragment: Fragment() {
 
+     var songID: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,6 +29,7 @@ class  AllSongsFragment: Fragment() {
         val allSongViewModel = ViewModelProvider(this, viewModelFactory).get(AllSongViewModel::class.java)
         binding.lifecycleOwner= this
         binding.allSongsViewModel = allSongViewModel
+        // su ly su kien khi click vao song item
         val adapter = SongAdapter(SongListener { songId ->
             allSongViewModel.playMusic(songId)
             binding.imageAlbum.setImageBitmap(allSongViewModel.getCoverPicture(songId))
@@ -35,6 +37,7 @@ class  AllSongsFragment: Fragment() {
             binding.textAuthor.text = allSongViewModel.getSongAuthor(songId)
             binding.songPopUp.visibility = View.VISIBLE
             binding.togglePlayPause.isChecked = true
+            songID = songId
         })
         binding.listSong.adapter = adapter
         allSongViewModel.listSong.observe(viewLifecycleOwner, Observer {
@@ -42,12 +45,10 @@ class  AllSongsFragment: Fragment() {
                 adapter.submitList(it)
             }
         })
-        binding.relativeLayout.setOnClickListener { view: View -> view.findNavController().navigate(AllSongsFragmentDirections.actionAllSongsFragmentToMediaPlaybackFragment2()) }
-
+        // chuyen doi so sang cho media play fragment
+        binding.relativeLayout.setOnClickListener { view: View ->
+            view.findNavController().navigate(AllSongsFragmentDirections.actionAllSongsFragmentToMediaPlaybackFragment2(songID))
+        }
         return  binding.root
-
     }
-
-
-
 }

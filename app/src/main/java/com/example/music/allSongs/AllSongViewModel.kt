@@ -55,7 +55,7 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
     }
     // lay ten bai hat
     fun getSongName(id:Int):String{
-        var songName: String ="Khong xac dinh"
+        var songName: String ="not found"
         listSong.value?.forEach { song ->
             if (song.getAlbumId()==id){
                 songName =song.getTitle()
@@ -65,13 +65,23 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
     }
     //lay ten tac gia
     fun getSongAuthor(id:Int):String{
-        var songAuthor: String ="Khong xac dinh"
+        var songAuthor: String ="not found"
         listSong.value?.forEach { song ->
             if (song.getAlbumId()==id){
-                songAuthor =song.getArtist()
+                songAuthor = song.getArtist()
             }
         }
         return  songAuthor
+    }
+   // lay uri cua anh
+    fun getUri(id:Int):String{
+       var uri: String =""
+       listSong.value?.forEach { song ->
+           if (song.getAlbumId()==id){
+               uri = Uri.parse(song.getData()).toString()
+           }
+       }
+       return  uri
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.music.mediaPlay
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,15 +33,18 @@ class MediaPlaybackFragment: Fragment() {
         val mediaViewModel = ViewModelProvider(this, mediaViewModelFactory).get(MediaPlaybackViewModel::class.java)
         binding.lifecycleOwner = this
         binding.mediaPlaybackViewModel = mediaViewModel
-        val adapter = SongAdapter(SongListener {  })
+        val adapter = SongAdapter(SongListener { })
         binding.listSong?.adapter = adapter
         mediaViewModel.listSong.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
-
-
+        getArgs()
         return binding.root
+    }
+    fun getArgs(){
+        val args = MediaPlaybackFragmentArgs.fromBundle(requireArguments())
+        val id = args.songID
     }
 }

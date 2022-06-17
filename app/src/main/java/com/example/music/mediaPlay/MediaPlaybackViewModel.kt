@@ -15,4 +15,14 @@ class MediaPlaybackViewModel(localMusicDataSource: LocalMusicDataSource): ViewMo
         listSong.value = localMusicDataSource.getSong()
 
     }
+    // lay ten bai hat
+    fun getSongName(id:Int):String{
+        var songName: String ="not found"
+        listSong.value?.forEach { song ->
+            if (song.getAlbumId()==id){
+                songName =song.getTitle()
+            }
+        }
+        return  songName
+    }
 }

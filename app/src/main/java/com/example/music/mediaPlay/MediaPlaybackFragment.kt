@@ -1,7 +1,7 @@
 package com.example.music.mediaPlay
 
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,11 +40,22 @@ class MediaPlaybackFragment: Fragment() {
                 adapter.submitList(it)
             }
         })
-        getArgs()
+        // set background
+        binding.mediaPlayback?.background = BitmapDrawable(resources,mediaViewModel.getCoverPicture(getArgs()))
+        // set image popUp
+        binding.imageAlbumMediaPlay.setImageBitmap(mediaViewModel.getCoverPicture(getArgs()))
+        //set name song
+        binding.textSongNameMediaPlay.text = mediaViewModel.getSongName(getArgs())
+        //set song
+        binding.textAuthorMediaPlay.text = mediaViewModel.getSongAuthor(getArgs())
+
+
+
+
         return binding.root
     }
-    fun getArgs(){
+    private fun getArgs(): Int {
         val args = MediaPlaybackFragmentArgs.fromBundle(requireArguments())
-        val id = args.songID
+        return args.songID
     }
 }

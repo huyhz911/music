@@ -73,16 +73,5 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
         }
         return  songAuthor
     }
-   // lay uri cua anh
-    fun getUri(id:Int):String{
-       var uri: String =""
-       listSong.value?.forEach { song ->
-           if (song.getAlbumId()==id){
-               uri = Uri.parse(song.getData()).toString()
-           }
-       }
-       return  uri
-    }
-
 
 }

@@ -18,7 +18,7 @@ import com.example.music.database.Song
  */
 class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel() {
    var listSong = MutableLiveData<ArrayList<Song>>()
-    private val mediaPlayer = MediaPlayer()
+    private var mediaPlayer: MediaPlayer? = null
     init {
         listSong.value = localMusicDataSource.getSong()
 
@@ -27,16 +27,28 @@ class AllSongViewModel(localMusicDataSource: LocalMusicDataSource) : ViewModel()
     fun playMusic(id: Int){
         listSong.value?.forEach { song ->
             if (song.getAlbumId()==id){
-                val uri = Uri.parse(song.getData())
-                mediaPlayer.setDataSource(MyApplication.getContext(), uri)
-                mediaPlayer.prepare()
-                mediaPlayer.start()
+                if (mediaPlayer == null){
+                    mediaPlayer = MediaPlayer()
+                    val uri = Uri.parse(song.getData())
+                    mediaPlayer?.setDataSource(MyApplication.getContext(), uri)
+                    mediaPlayer?.prepare()
+                    mediaPlayer?.start()
+                }else{
+                    mediaPlayer!!.stop()
+                    mediaPlayer = null
+                    mediaPlayer = MediaPlayer()
+                    val uri = Uri.parse(song.getData())
+                    mediaPlayer?.setDataSource(MyApplication.getContext(), uri)
+                    mediaPlayer?.prepare()
+                    mediaPlayer?.start()
+                }
+
             }
         }
     }
     // pause music
     fun pauseMusic(){
-        mediaPlayer.pause()
+        mediaPlayer?.pause()
     }
     // lay anh bia album
     fun getCoverPicture(id: Int): Bitmap{

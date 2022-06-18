@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "favorite_songs_provider")
 data class FavoriteSongs(
     @PrimaryKey(autoGenerate = true)
-    var ID: Int = 0 ,
+    var ID: Int = -1 ,
     @ColumnInfo(name = "song_ID")
     var ID_PROVIDER: Int,
     @ColumnInfo(name = "song_rating")

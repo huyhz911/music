@@ -42,6 +42,8 @@ class MediaPlaybackFragment: Fragment() {
         })
         // set background
         binding.mediaPlayback?.background = BitmapDrawable(resources,mediaViewModel.getCoverPicture(getArgs()))
+        // set backgroundlandscape
+        binding.mediaPlayBackLandScape?.background = BitmapDrawable(resources,mediaViewModel.getCoverPicture(getArgs()))
         // set image popUp
         binding.imageAlbumMediaPlay.setImageBitmap(mediaViewModel.getCoverPicture(getArgs()))
         //set name song

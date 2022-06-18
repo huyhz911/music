@@ -44,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/mediaPlayBackLandScape"
             android:layout_width="380dp"
             android:layout_height="0dp"
             android:background="@drawable/bg_default_album_art"
@@ -66,7 +66,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/imageView6"
+                        android:id="@+id/optionsMedia"
                         android:layout_width="33dp"
                         android:layout_height="68dp"
                         android:layout_alignParentEnd="true"
@@ -147,7 +147,7 @@
                     android:layout_height="match_parent">
 
                     <ToggleButton
-                        android:id="@+id/toggleButton2"
+                        android:id="@+id/toggleLike"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginStart="75dp"
@@ -161,13 +161,13 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <ImageView
-                        android:id="@+id/imageView3"
+                        android:id="@+id/backButton"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginStart="25dp"
                         android:layout_marginLeft="25dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/toggleButton2"
+                        app:layout_constraintStart_toEndOf="@+id/toggleLike"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.52"
                         app:srcCompat="@drawable/ic_rew_dark" />
@@ -177,24 +177,24 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView5"
-                        app:layout_constraintStart_toEndOf="@+id/imageView3"
+                        app:layout_constraintEnd_toStartOf="@+id/nextButton"
+                        app:layout_constraintStart_toEndOf="@+id/backButton"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_fab_play_btn_normal" />
 
                     <ImageView
-                        android:id="@+id/imageView5"
+                        android:id="@+id/nextButton"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="25dp"
                         android:layout_marginRight="25dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/toggleButton3"
+                        app:layout_constraintEnd_toStartOf="@+id/toggleDislike"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_fwd_dark" />
 
                     <ToggleButton
-                        android:id="@+id/toggleButton3"
+                        android:id="@+id/toggleDislike"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginEnd="75dp"
@@ -209,15 +209,15 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <ToggleButton
-                        android:id="@+id/toggleButton4"
+                        android:id="@+id/togglePlayPause"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:background="@drawable/play_pause_white"
                         android:textOff=""
                         android:textOn=""
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView5"
-                        app:layout_constraintStart_toEndOf="@+id/imageView3"
+                        app:layout_constraintEnd_toStartOf="@+id/nextButton"
+                        app:layout_constraintStart_toEndOf="@+id/backButton"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

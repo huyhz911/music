@@ -6,5 +6,6 @@
     <string name="search">Search</string>
     <string name="seconds_length">%d seconds on %s</string>
     <string name="minutes_length">% minutes on %s</string>
+    <string name="time_default">00:00</string>
 
 </resources>

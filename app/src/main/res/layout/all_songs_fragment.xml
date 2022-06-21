@@ -11,9 +11,6 @@
         <variable
             name="clickListener"
             type="com.example.music.allSongs.SongListener" />
-        <variable
-            name="allSongsViewModel"
-            type="com.example.music.allSongs.AllSongViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

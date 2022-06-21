@@ -1,4 +1,4 @@
-package com.example.music.mediaPlay
+package com.example.music.database
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -6,44 +6,22 @@ import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.music.MyApplication
 import com.example.music.R
-import com.example.music.database.LocalMusicDataSource
-import com.example.music.database.Song
 
 /**
- * Created by Bkav HuyNgQe on 07/06/2022.
+ * Created by Bkav HuyNgQe on 20/06/2022.
  */
-class MediaPlaybackViewModel(localMusicDataSource: LocalMusicDataSource): ViewModel() {
-
+class SongRepository() {
+    private val localMusicDataSource = LocalMusicDataSource()
     var listSong = MutableLiveData<ArrayList<Song>>()
-    private val mediaPlayer = MediaPlayer()
     init {
         listSong.value = localMusicDataSource.getSong()
 
     }
-    // lay ten bai hat
-    fun getSongName(id:Int):String{
-        var songName: String ="not found"
-        listSong.value?.forEach { song ->
-            if (song.getAlbumId()==id){
-                songName =song.getTitle()
-            }
-        }
-        return  songName
-    }
-    //lay ten tac gia
-    fun getSongAuthor(id:Int):String{
-        var songAuthor: String ="not found"
-        listSong.value?.forEach { song ->
-            if (song.getAlbumId()==id){
-                songAuthor = song.getArtist()
-            }
-        }
-        return  songAuthor
-    }
-    // lay anh bia album
+    /**
+     * Bkav HuyNgQe: lay anh bia album
+     */
     fun getCoverPicture(id: Int): Bitmap {
         var art: Bitmap = BitmapFactory.decodeResource(MyApplication.getContext().resources , R.drawable.bg_default_album_art)
         listSong.value?.forEach { song ->
@@ -58,16 +36,28 @@ class MediaPlaybackViewModel(localMusicDataSource: LocalMusicDataSource): ViewMo
         }
         return  art
     }
-    // play music
-    fun playMusic(id: Int){
+    /**
+     * Bkav HuyNgQe: lay ten bai hat
+     */
+    fun getSongName(id:Int):String{
+        var songName: String =MyApplication.getContext().getString(R.string.not_found)
         listSong.value?.forEach { song ->
             if (song.getAlbumId()==id){
-                val uri = Uri.parse(song.getData())
-                mediaPlayer.setDataSource(MyApplication.getContext(), uri)
-                mediaPlayer.prepare()
-                mediaPlayer.start()
+                songName =song.getTitle()
             }
         }
+        return  songName
     }
-
+    /**
+     * Bkav HuyNgQe:lay ten tac gia
+     */
+    fun getSongAuthor(id:Int):String{
+        var songAuthor: String =MyApplication.getContext().getString(R.string.not_found)
+        listSong.value?.forEach { song ->
+            if (song.getAlbumId()==id){
+                songAuthor = song.getArtist()
+            }
+        }
+        return  songAuthor
+    }
 }

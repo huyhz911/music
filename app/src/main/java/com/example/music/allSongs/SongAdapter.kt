@@ -18,9 +18,9 @@ class SongAdapter(val clickListener: SongListener): ListAdapter<Song,SongAdapter
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
        val item = getItem(position)
-        holder.songName.text = item.getTitle()
+        holder.songName.text = item.songName
         holder.songPosition.text = (position + 1).toString()
-        val timeS = (item.getDuration()/1000).toInt()
+        val timeS = (item.duration/1000).toInt()
         val min = (timeS / 60)
         val sec = (timeS % 60)
         holder.songDuration.text = ("$min: $sec").toString()
@@ -46,7 +46,7 @@ class SongAdapter(val clickListener: SongListener): ListAdapter<Song,SongAdapter
 }
 class SongInfoDiffCallback: DiffUtil.ItemCallback<Song>(){
     override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
-        return  oldItem.getAlbumId() == newItem.getAlbumId()
+        return  oldItem.songID == newItem.songID
     }
 
     @SuppressLint("DiffUtilEquals")
@@ -55,6 +55,6 @@ class SongInfoDiffCallback: DiffUtil.ItemCallback<Song>(){
     }
 }
 class SongListener(val clickListener: (songId: Int) -> Unit){
-    fun onClick(song: Song)= clickListener(song.getAlbumId())
+    fun onClick(song: Song)= clickListener(song.songID)
 }
 

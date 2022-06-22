@@ -58,4 +58,23 @@
     <dimen name="margin_right_toggle_dislike">40dp</dimen>
     <dimen name="width_play_pause">25dp</dimen>
     <dimen name="height_play_pause">25dp</dimen>
+    <dimen name="height_notification">80dp</dimen>
+    <dimen name="width_imageAlbumNotification">60dp</dimen>
+    <dimen name="height_imageAlbumNotification">60dp</dimen>
+    <dimen name="marginStart_imageAlbumNotification">10dp</dimen>
+    <dimen name="marginLeft_imageAlbumNotification">10dp</dimen>
+    <dimen name="marginTop_imageAlbumNotification">10dp</dimen>
+    <dimen name="marginBottom_imageAlbumNotification">10dp</dimen>
+    <dimen name="width_back_notification">25dp</dimen>
+    <dimen name="height_back_notification">25dp</dimen>
+    <dimen name="width_next_notification">25dp</dimen>
+    <dimen name="height_next_notification">25dp</dimen>
+    <dimen name="marginEnd_next_notification">20dp</dimen>
+    <dimen name="marginRight_next_notification">20dp</dimen>
+    <dimen name="constraintGuide_begin">205dp</dimen>
+    <dimen name="marginEnd_play_pause">50dp</dimen>
+    <dimen name="marginRight_play_pause">50dp</dimen>
+    <dimen name="marginBottom_play_pause">28dp</dimen>
+    <dimen name="marginStart_play_pause">50dp</dimen>
+    <dimen name="marginTop_play_pause">27dp</dimen>
 </resources>

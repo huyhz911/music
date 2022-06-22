@@ -22,11 +22,11 @@ class SongRepository() {
     /**
      * Bkav HuyNgQe: lay anh bia album
      */
-    fun getCoverPicture(id: Int): Bitmap {
+    fun getCoverPicture(id: Int):Bitmap{
         var art: Bitmap = BitmapFactory.decodeResource(MyApplication.getContext().resources , R.drawable.bg_default_album_art)
         listSong.value?.forEach { song ->
-            if (song.getAlbumId()==id){
-                val uri = Uri.parse(song.getData())
+            if (song.songID==id){
+                val uri = Uri.parse(song.data)
                 val mmr = MediaMetadataRetriever()
                 val bfo = BitmapFactory.Options()
                 mmr.setDataSource(MyApplication.getContext(), uri)
@@ -42,8 +42,8 @@ class SongRepository() {
     fun getSongName(id:Int):String{
         var songName: String =MyApplication.getContext().getString(R.string.not_found)
         listSong.value?.forEach { song ->
-            if (song.getAlbumId()==id){
-                songName =song.getTitle()
+            if (song.songID==id){
+                songName =song.songName
             }
         }
         return  songName
@@ -54,8 +54,8 @@ class SongRepository() {
     fun getSongAuthor(id:Int):String{
         var songAuthor: String =MyApplication.getContext().getString(R.string.not_found)
         listSong.value?.forEach { song ->
-            if (song.getAlbumId()==id){
-                songAuthor = song.getArtist()
+            if (song.songID==id){
+                songAuthor = song.artists
             }
         }
         return  songAuthor

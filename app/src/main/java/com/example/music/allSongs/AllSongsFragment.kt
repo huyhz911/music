@@ -1,22 +1,25 @@
 package com.example.music.allSongs
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Bundle
-import android.provider.Telephony
-import android.view.*
-import androidx.core.content.ContextCompat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.music.ActivityMusic
 import com.example.music.MyApplication
 import com.example.music.R
-import com.example.music.database.LocalMusicDataSource
 import com.example.music.database.SongRepository
 import com.example.music.databinding.AllSongsFragmentBinding
 import com.example.music.mediaPlayService.MediaPlaybackService
+import java.io.Serializable
 
 /**
  * Created by Bkav HuyNgQe on 07/06/2022.
@@ -41,8 +44,13 @@ class  AllSongsFragment: Fragment() {
         // su ly su kien khi click vao song item
         val adapter = SongAdapter(SongListener { songId ->
             // start service
-            val intent = Intent(MyApplication.getContext(), MediaPlaybackService::class.java)
+            val intent = Intent(activity, MediaPlaybackService::class.java)
+            val bundle= Bundle()
+            val picture = GetSongPicture(songId)
+            bundle.putSerializable("pictureSong", picture)
+            intent.putExtras(bundle)
             activity?.startService(intent)
+
 
             mediaPlaybackService.playMusic(songId)
             binding.imageAlbum.setImageBitmap(songRepository.getCoverPicture(songId))
@@ -71,6 +79,30 @@ class  AllSongsFragment: Fragment() {
 
 //        (activity as ActivityMusic).mService
         return  binding.root
+    }
+
+
+}
+/**
+ * Bkav HuyNgQe:lay anh bia ra de chuyen sang thong bao
+ */
+class  GetSongPicture(id:Int):Serializable{
+    @Transient // todo
+    var art: Bitmap = BitmapFactory.decodeResource(MyApplication.getContext().resources , R.drawable.bg_default_album_art)
+    private val idx:Int = id
+    fun getPicture(): Bitmap{
+        val repository= SongRepository()
+            .listSong.value?.forEach { song ->
+                if (song.songID==idx){
+                    val uri = Uri.parse(song.data)
+                    val mmr = MediaMetadataRetriever()
+                    val bfo = BitmapFactory.Options()
+                    mmr.setDataSource(MyApplication.getContext(), uri)
+                    val rawArt: ByteArray? = mmr.embeddedPicture
+                    if (null != rawArt){ art = BitmapFactory.decodeByteArray(rawArt, 0, rawArt.size, bfo)}
+                }
+            }
+        return art
     }
 
 

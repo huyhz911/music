@@ -14,50 +14,42 @@ import com.example.music.R
  */
 class SongRepository() {
     private val localMusicDataSource = LocalMusicDataSource()
-    var listSong = MutableLiveData<ArrayList<Song>>()
-    init {
-        listSong.value = localMusicDataSource.getSong()
 
-    }
     /**
      * Bkav HuyNgQe: lay anh bia album
      */
-    fun getCoverPicture(id: Int):Bitmap{
+    fun getCoverPicture(song: Song):Bitmap{
         var art: Bitmap = BitmapFactory.decodeResource(MyApplication.getContext().resources , R.drawable.bg_default_album_art)
-        listSong.value?.forEach { song ->
-            if (song.songID==id){
                 val uri = Uri.parse(song.data)
                 val mmr = MediaMetadataRetriever()
                 val bfo = BitmapFactory.Options()
                 mmr.setDataSource(MyApplication.getContext(), uri)
                 val rawArt: ByteArray? = mmr.embeddedPicture
                 if (null != rawArt){ art = BitmapFactory.decodeByteArray(rawArt, 0, rawArt.size, bfo)}
-            }
-        }
         return  art
     }
     /**
      * Bkav HuyNgQe: lay ten bai hat
      */
-    fun getSongName(id:Int):String{
+    fun getSongName(song:Song):String{
         var songName: String =MyApplication.getContext().getString(R.string.not_found)
-        listSong.value?.forEach { song ->
-            if (song.songID==id){
                 songName =song.songName
-            }
-        }
         return  songName
     }
     /**
      * Bkav HuyNgQe:lay ten tac gia
      */
-    fun getSongAuthor(id:Int):String{
+    fun getSongAuthor(song:Song):String{
         var songAuthor: String =MyApplication.getContext().getString(R.string.not_found)
-        listSong.value?.forEach { song ->
-            if (song.songID==id){
                 songAuthor = song.artists
-            }
-        }
+
         return  songAuthor
+    }
+
+    /**
+     * Bkav HuyNgQe:
+     */
+    fun getSongs(): ArrayList<Song> {
+        return localMusicDataSource.getSong()
     }
 }

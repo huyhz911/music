@@ -15,7 +15,7 @@ import com.example.music.databinding.ListItemSongBinding
  */
 class SongAdapter(val clickListener: SongListener): ListAdapter<Song,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {
 
-    @SuppressLint("SetTextI18n")
+
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
        val item = getItem(position)
         holder.songName.text = item.songName
@@ -49,12 +49,13 @@ class SongInfoDiffCallback: DiffUtil.ItemCallback<Song>(){
         return  oldItem.songID == newItem.songID
     }
 
+
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
         return oldItem == newItem
     }
 }
-class SongListener(val clickListener: (songId: Int) -> Unit){
-    fun onClick(song: Song)= clickListener(song.songID)
+class SongListener(val clickListener: (songId: Song) -> Unit){
+    fun onClick(song: Song)= clickListener(song)
 }
 

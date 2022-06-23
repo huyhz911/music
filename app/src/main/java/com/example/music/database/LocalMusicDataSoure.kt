@@ -10,10 +10,11 @@ import com.example.music.MyApplication
  * Created by Bkav HuyNgQe on 07/06/2022.
  */
 class LocalMusicDataSource {
+    /**
+     * Bkav HuyNgQe: lay bai hat
+     */
     fun getSong(): ArrayList<Song> {
         val songs: ArrayList<Song> = ArrayList()
-
-
         val projection = arrayOf(
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ARTIST,
@@ -27,7 +28,6 @@ class LocalMusicDataSource {
         val sortOrder = MediaStore.Audio.AudioColumns.TITLE + " COLLATE LOCALIZED ASC"
 
         var cursor: Cursor? = null
-        try {
             val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             cursor =
                 MyApplication.instance?.contentResolver?.query(uri,projection,null,null, sortOrder)
@@ -45,13 +45,9 @@ class LocalMusicDataSource {
                     cursor.moveToNext()
                 }
             }
-        } catch (e: Exception) {
-            Log.e("Media", e.toString())
-        } finally {
             if (cursor != null) {
                 cursor.close()
             }
-        }
       return songs;
     }
 }

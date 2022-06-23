@@ -9,9 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import com.example.music.ActivityMusic
 import com.example.music.R
 import com.example.music.allSongs.SongAdapter
 import com.example.music.allSongs.SongListener
+import com.example.music.database.Song
 import com.example.music.database.SongRepository
 import com.example.music.databinding.MediaPlayBackFragmentBinding
 import com.example.music.mediaPlayService.MediaPlaybackService
@@ -28,16 +30,19 @@ class MediaPlaybackFragment: Fragment() {
         val binding= DataBindingUtil.inflate<MediaPlayBackFragmentBinding>(inflater,
             R.layout.media_play_back_fragment,container,false)
         binding.imageBackListSong?.setOnClickListener { view: View -> view.findNavController().navigate(MediaPlaybackFragmentDirections.actionMediaPlaybackFragmentToAllSongsFragment())}
-        val mediaPlaybackService = MediaPlaybackService()
         val songRepository = SongRepository()
         binding.lifecycleOwner = this
         val adapter = SongAdapter(SongListener { })
         binding.listSong?.adapter = adapter
+        val mediaPlaybackService = (activity as ActivityMusic).mService
         mediaPlaybackService.listSong.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
+        if (mediaPlaybackService.checkIsPlaying()){
+            binding.togglePlayPause.isChecked = true
+        }
         // set background
         binding.mediaPlayback?.background = BitmapDrawable(resources,songRepository.getCoverPicture(getArgs()))
         // set backgroundlandscape
@@ -53,8 +58,7 @@ class MediaPlaybackFragment: Fragment() {
     /**
      * Bkav HuyNgQe: lay doi so chuyen tu all song fragment
      */
-    private fun getArgs(): Int {
-        val args = MediaPlaybackFragmentArgs.fromBundle(requireArguments())
-        return args.songID
+    private fun getArgs(): Song {
+       return MediaPlaybackFragmentArgs.fromBundle(requireArguments()).song
     }
 }

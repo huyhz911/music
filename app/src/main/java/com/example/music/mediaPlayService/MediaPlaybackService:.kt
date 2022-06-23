@@ -3,23 +3,20 @@ package com.example.music.mediaPlayService
 import android.app.*
 import android.app.PendingIntent.*
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import com.example.music.ActivityMusic
 import com.example.music.MyApplication
 import com.example.music.MyApplication.Companion.CHANNEL_ID
 import com.example.music.R
-import com.example.music.allSongs.AllSongsFragment
 import com.example.music.allSongs.GetSongPicture
-import com.example.music.database.LocalMusicDataSource
+import com.example.music.database.Song
 import com.example.music.database.SongRepository
 
 
@@ -28,45 +25,55 @@ import com.example.music.database.SongRepository
  */
 class MediaPlaybackService(): Service() {
     var songRepository = SongRepository()
-    var listSong = songRepository.listSong
-    private var mediaPlayer: MediaPlayer? = null
+    var listSong = MutableLiveData<ArrayList<Song>>()
+    var mediaPlayer = MediaPlayer()
+
     init {
-        listSong.value = LocalMusicDataSource().getSong()
-
+        listSong.value = songRepository.getSongs()
     }
-
     /**
      * Bkav HuyNgQe: play music
      */
-    fun playMusic(id: Int){
-        listSong.value?.forEach { song ->
-            if (song.songID==id){
-                if (mediaPlayer == null){
-                    mediaPlayer = MediaPlayer()
+    fun playMusic(song: Song){
+                if (!mediaPlayer.isPlaying){
                     val uri = Uri.parse(song.data)
-                    mediaPlayer?.setDataSource(MyApplication.getContext(), uri)
-                    mediaPlayer?.prepare()
-                    mediaPlayer?.start()
+                    mediaPlayer.setDataSource(MyApplication.getContext(), uri)
+                    mediaPlayer.prepare()
+                    mediaPlayer.start()
                 }else{
-                    mediaPlayer!!.stop()
-                    mediaPlayer = null
-                    mediaPlayer = MediaPlayer()
+                    mediaPlayer.stop()
+                    mediaPlayer.reset()
                     val uri = Uri.parse(song.data)
-                    mediaPlayer?.setDataSource(MyApplication.getContext(), uri)
-                    mediaPlayer?.prepare()
-                    mediaPlayer?.start()
-                }
+                    mediaPlayer.setDataSource(MyApplication.getContext(), uri)
+                    mediaPlayer.prepare()
+                    mediaPlayer.start()
 
+                }
             }
-        }
-    }
+
+
     /**
      * Bkav HuyNgQe: pause music
      */
     fun pauseMusic(){
-        mediaPlayer?.pause()
+        if (mediaPlayer.isPlaying){
+            mediaPlayer.pause()
+        }
     }
-
+    /**
+     * Bkav HuyNgQe: resumeMusic
+     */
+    fun resumeMusic(){
+        if (!mediaPlayer.isPlaying){
+            mediaPlayer.start()
+        }
+    }
+    /**
+     * Bkav HuyNgQe: check isPlaying
+     */
+    fun checkIsPlaying(): Boolean {
+        return mediaPlayer.isPlaying
+    }
     override fun onCreate() {
         super.onCreate()
     }
@@ -80,7 +87,9 @@ class MediaPlaybackService(): Service() {
         }
         return START_NOT_STICKY
     }
-
+    /**
+     * Bkav HuyNgQe:Gui thong tin len thong bao
+     */
     private fun sendNotification(picture: GetSongPicture) {
         val intent = Intent(MyApplication.getContext(), ActivityMusic::class.java)
         val pendingIntent = getActivity(this, 0, intent, FLAG_UPDATE_CURRENT)

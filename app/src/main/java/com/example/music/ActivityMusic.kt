@@ -70,4 +70,7 @@ class ActivityMusic : AppCompatActivity() {
         mBound = false
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

@@ -20,10 +20,13 @@ class SongAdapter(val clickListener: SongListener): ListAdapter<Song,SongAdapter
        val item = getItem(position)
         holder.songName.text = item.songName
         holder.songPosition.text = (position + 1).toString()
-        val timeS = (item.duration/1000).toInt()
-        val min = (timeS / 60)
-        val sec = (timeS % 60)
-        holder.songDuration.text = ("$min: $sec").toString()
+        item.duration.let {
+            val timeS = (it?.div(1000))?.toInt()
+            val min = (timeS?.div(60))
+            val sec = (timeS?.rem(60))
+            holder.songDuration.text = ("$min: $sec").toString()
+        }
+
         holder.bind(clickListener)
         holder.binding.song = item
     }

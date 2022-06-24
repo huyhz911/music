@@ -33,7 +33,7 @@ class SongRepository() {
      */
     fun getSongName(song:Song):String{
         var songName: String =MyApplication.getContext().getString(R.string.not_found)
-                songName =song.songName
+                songName = song.songName.toString()
         return  songName
     }
     /**
@@ -41,7 +41,7 @@ class SongRepository() {
      */
     fun getSongAuthor(song:Song):String{
         var songAuthor: String =MyApplication.getContext().getString(R.string.not_found)
-                songAuthor = song.artists
+                songAuthor = song.artists.toString()
 
         return  songAuthor
     }

@@ -4,6 +4,8 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.database.getLongOrNull
+import androidx.core.database.getStringOrNull
 import com.example.music.MyApplication
 
 /**
@@ -33,14 +35,14 @@ class LocalMusicDataSource {
                 MyApplication.instance?.contentResolver?.query(uri,projection,null,null, sortOrder)
             if (cursor != null) {
                 cursor.moveToFirst()
-                val position = 1
                 while (!cursor.isAfterLast) {
                     val song = Song(cursor.getInt(7),
-                        cursor.getString(0),
-                        cursor.getString(5),
-                        cursor.getString(1),
-                        cursor.getLong(4),
-                        cursor.getString(2))
+                        cursor.getStringOrNull(0),
+                        cursor.getStringOrNull(5),
+                        cursor.getStringOrNull(1),
+                        cursor.getLongOrNull(4),
+                        cursor.getStringOrNull(2),
+                        songs.size +1)
                     songs.add(song)
                     cursor.moveToNext()
                 }

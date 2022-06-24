@@ -6,7 +6,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
-import android.os.Bundle
 import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
@@ -15,31 +14,44 @@ import com.example.music.ActivityMusic
 import com.example.music.MyApplication
 import com.example.music.MyApplication.Companion.CHANNEL_ID
 import com.example.music.R
-import com.example.music.allSongs.GetSongPicture
 import com.example.music.database.Song
 import com.example.music.database.SongRepository
+import java.text.FieldPosition
 
 
 /**
  * Created by Bkav HuyNgQe on 18/06/2022.
  */
 class MediaPlaybackService(): Service() {
+
+    var indexSong: Int = -1
     var songRepository = SongRepository()
     var listSong = MutableLiveData<ArrayList<Song>>()
-    var mediaPlayer = MediaPlayer()
+
+    private var mediaPlayer: MediaPlayer
 
     init {
         listSong.value = songRepository.getSongs()
+        mediaPlayer = MediaPlayer()
     }
+
     /**
      * Bkav HuyNgQe: play music
      */
     fun playMusic(song: Song){
                 if (!mediaPlayer.isPlaying){
+                    mediaPlayer.stop()
+                    mediaPlayer.reset()
                     val uri = Uri.parse(song.data)
                     mediaPlayer.setDataSource(MyApplication.getContext(), uri)
                     mediaPlayer.prepare()
                     mediaPlayer.start()
+                    mediaPlayer.setOnCompletionListener{
+                        if (song.position < listSong.value!!.size){
+                        nextSong(song.position)
+                    }else{
+                        mediaPlayer.stop()
+                    } }
                 }else{
                     mediaPlayer.stop()
                     mediaPlayer.reset()
@@ -50,7 +62,13 @@ class MediaPlaybackService(): Service() {
 
                 }
             }
-
+ /**
+  * Bkav HuyNgQe: auto next song
+  */
+    private fun nextSong(position:Int){
+     val index: Int = position
+     playMusic(listSong.value!!.get(index))
+    }
 
     /**
      * Bkav HuyNgQe: pause music
@@ -80,21 +98,16 @@ class MediaPlaybackService(): Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val bundle: Bundle? = intent?.extras
-        if (bundle!= null){
-            val picture: GetSongPicture = bundle.get("pictureSong") as GetSongPicture
-            sendNotification(picture)
-        }
         return START_NOT_STICKY
     }
     /**
      * Bkav HuyNgQe:Gui thong tin len thong bao
      */
-    private fun sendNotification(picture: GetSongPicture) {
+    fun sendNotification(song: Song) {
         val intent = Intent(MyApplication.getContext(), ActivityMusic::class.java)
         val pendingIntent = getActivity(this, 0, intent, FLAG_UPDATE_CURRENT)
         val remoteViews= RemoteViews(packageName, R.layout.song_notification)
-        remoteViews.setImageViewBitmap(R.id.imageAlbumNotification,picture.getPicture())
+        remoteViews.setImageViewBitmap(R.id.imageAlbumNotification,song.getPicture())
         remoteViews.setImageViewResource(R.id.back_notification, R.drawable.ic_rew_dark)
         remoteViews.setImageViewResource(R.id.background_play_pause_button, R.drawable.ic_fab_play_btn_normal)
         remoteViews.setImageViewResource(R.id.next_notification, R.drawable.ic_fwd_dark)

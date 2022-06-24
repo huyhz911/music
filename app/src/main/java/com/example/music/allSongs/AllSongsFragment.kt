@@ -1,11 +1,14 @@
 package com.example.music.allSongs
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +31,7 @@ import java.io.Serializable
 
 class  AllSongsFragment: Fragment() {
 
-     lateinit var songPra :Song
+    lateinit var songPra :Song
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,21 +42,23 @@ class  AllSongsFragment: Fragment() {
             R.layout.all_songs_fragment,
             container,
             false)
-        val mediaPlaybackService = MediaPlaybackService()
+
         val songRepository = SongRepository()
         binding.lifecycleOwner = this
+
+
         // su ly su kien khi click vao song item
         val adapter = SongAdapter(SongListener { song ->
             // start service
-            val intent = Intent(activity, MediaPlaybackService::class.java)
-            val bundle= Bundle()
-            val picture = GetSongPicture(song)
-            bundle.putSerializable("pictureSong", picture)
-            intent.putExtras(bundle)
-            activity?.startService(intent)
-
-
-            mediaPlaybackService.playMusic(song)
+       //     val intent = Intent(activity, MediaPlaybackService::class.java)
+//            val bundle= Bundle()
+//            val picture = GetSongPicture(song)
+//            bundle.putSerializable("pictureSong", picture)
+//            intent.putExtras(bundle)
+//            activity?.startService(intent)
+            val mediaPlaybackService =  (activity as ActivityMusic).mService
+            mediaPlaybackService?.sendNotification(song)
+            mediaPlaybackService?.playMusic(song)
             binding.imageAlbum.setImageBitmap(songRepository.getCoverPicture(song))
             binding.textSongName.text = songRepository.getSongName(song)
             binding.textAuthor.text = song.artists
@@ -62,11 +67,6 @@ class  AllSongsFragment: Fragment() {
             songPra = song
         })
         binding.listSong.adapter = adapter
-//        allSongViewModel.listSong.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                adapter.submitList(it)
-//            }
-//        })
 
         (activity as ActivityMusic).listSong.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -78,9 +78,11 @@ class  AllSongsFragment: Fragment() {
             view.findNavController().navigate(AllSongsFragmentDirections.actionAllSongsFragmentToMediaPlaybackFragment2(songPra))
         }
         binding.togglePlayPause.setOnClickListener { if (binding.togglePlayPause.isChecked){
-              mediaPlaybackService.resumeMusic()
+            (activity as ActivityMusic).mService?.resumeMusic()
+
         }else{
-            mediaPlaybackService.pauseMusic()
+            (activity as ActivityMusic).mService?.pauseMusic()
+
         }
         }
 
@@ -90,22 +92,4 @@ class  AllSongsFragment: Fragment() {
 
 
 }
-/**
- * Bkav HuyNgQe:lay anh bia ra de chuyen sang thong bao
- */
-class  GetSongPicture(song: Song):Serializable{
-    @Transient // todo
-    var art: Bitmap = BitmapFactory.decodeResource(MyApplication.getContext().resources , R.drawable.bg_default_album_art)
-    private var song: Song = song
-    fun getPicture(): Bitmap{
-                    val uri = Uri.parse(song.data)
-                    val mmr = MediaMetadataRetriever()
-                    val bfo = BitmapFactory.Options()
-                    mmr.setDataSource(MyApplication.getContext(), uri)
-                    val rawArt: ByteArray? = mmr.embeddedPicture
-                    if (null != rawArt){ art = BitmapFactory.decodeByteArray(rawArt, 0, rawArt.size, bfo)}
-        return art
-    }
 
-
-}

@@ -34,13 +34,13 @@ class MediaPlaybackFragment: Fragment() {
         binding.lifecycleOwner = this
         val adapter = SongAdapter(SongListener { })
         binding.listSong?.adapter = adapter
-        val mediaPlaybackService = (activity as ActivityMusic).mService
-        mediaPlaybackService.listSong.observe(viewLifecycleOwner, Observer {
+
+        (activity as ActivityMusic).listSong.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
-        if (mediaPlaybackService.checkIsPlaying()){
+        if ((activity as ActivityMusic).mService?.checkIsPlaying() == true){
             binding.togglePlayPause.isChecked = true
         }
         // set background
@@ -53,6 +53,16 @@ class MediaPlaybackFragment: Fragment() {
         binding.textSongNameMediaPlay.text = songRepository.getSongName(getArgs())
         //set song
         binding.textAuthorMediaPlay.text = songRepository.getSongAuthor(getArgs())
+
+        binding.togglePlayPause.setOnClickListener {   if (binding.togglePlayPause.isChecked){
+            (activity as ActivityMusic).mService?.resumeMusic()
+
+        }else{
+            (activity as ActivityMusic).mService?.pauseMusic()
+
+        }
+
+        }
         return binding.root
     }
     /**

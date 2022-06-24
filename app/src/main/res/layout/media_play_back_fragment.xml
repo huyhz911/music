@@ -68,35 +68,39 @@
                     android:id="@+id/textSongNameMediaPlay"
                     style="@style/textStyle"
                     android:layout_width="@dimen/width_text_son_name_media_play"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/height_text_name_song"
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="@dimen/margin_start_text_son_name_media_play"
                     android:layout_marginLeft="@dimen/margin_left_text_son_name_media_play"
-                    android:layout_marginTop="@dimen/margin_tp_text_son_name_media_play"
+                    android:layout_marginTop="@dimen/margin_top_text_name_song"
                     android:layout_toEndOf="@+id/imageAlbumMediaPlay"
                     android:layout_toRightOf="@+id/imageAlbumMediaPlay"
+                    android:maxLines="1"
                     android:text="TextView"
-                    app:layout_constraintBottom_toTopOf="@+id/textAuthorMediaPlay"
                     app:layout_constraintEnd_toStartOf="@+id/imageBackListSong"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/imageAlbumMediaPlay"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textAuthorMediaPlay"
                     style="@style/textTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/width_text_son_name_media_play"
+                    android:layout_height="@dimen/height_author"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="@dimen/margin_start_text_author_media_play"
                     android:layout_marginLeft="@dimen/margin_left_text_author_media_play"
-                    android:layout_marginBottom="@dimen/margin_buttom_text_author_media_play"
+                    android:layout_marginBottom="20dp"
                     android:layout_toEndOf="@+id/imageAlbumMediaPlay"
                     android:layout_toRightOf="@+id/imageAlbumMediaPlay"
+                    android:maxLines="2"
                     android:text="TextView"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageAlbumMediaPlay" />
+                    app:layout_constraintEnd_toStartOf="@+id/imageBackListSong"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/imageAlbumMediaPlay"
+                    app:layout_constraintTop_toBottomOf="@+id/textSongNameMediaPlay"
+                    app:layout_constraintVertical_bias="0.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </RelativeLayout>

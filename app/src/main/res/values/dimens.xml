@@ -4,7 +4,7 @@
     <dimen name="picture_Popup">50dp</dimen>
     <dimen name="margin_Image">16dp</dimen>
     <dimen name="margin_text_name_song">8dp</dimen>
-    <dimen name="margin_top">16dp</dimen>
+    <dimen name="margin_top">10dp</dimen>
     <dimen name="margin_text_author">8dp</dimen>
     <dimen name="margin_bottom">15dp</dimen>
     <dimen name="with_play_button">30dp</dimen>
@@ -77,4 +77,11 @@
     <dimen name="marginBottom_play_pause">28dp</dimen>
     <dimen name="marginStart_play_pause">50dp</dimen>
     <dimen name="marginTop_play_pause">27dp</dimen>
+    <dimen name="width_nameSong">200dp</dimen>
+    <dimen name="margin_top_text_name_song">10dp</dimen>
+    <dimen name="margin_left_text_name_song">18dp</dimen>
+    <dimen name="margin_start_text_name_song">18dp</dimen>
+    <dimen name="margin_height_text_name_song">28dp</dimen>
+    <dimen name="height_text_name_song">30dp</dimen>
+    <dimen name="height_author">30dp</dimen>
 </resources>

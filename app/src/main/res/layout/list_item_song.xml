@@ -39,14 +39,16 @@
         <TextView
             android:id="@+id/songName"
             style="@style/textStyle"
-            android:layout_width="0dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginTop="4dp"
-            android:text="TextView"
+            android:layout_width="@dimen/width_nameSong"
+            android:layout_height="@dimen/margin_height_text_name_song"
+            android:layout_marginStart="@dimen/margin_start_text_name_song"
+            android:layout_marginLeft="@dimen/margin_left_text_name_song"
+            android:layout_marginTop="@dimen/margin_top_text_name_song"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
+            android:text="@string/not_found"
             app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/position"
             app:layout_constraintTop_toTopOf="parent" />
 

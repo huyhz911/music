@@ -40,13 +40,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:layout_constraintVertical_bias="0.0"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            app:layout_constraintVertical_bias="0.0" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -79,11 +79,14 @@
                 <TextView
                     android:id="@+id/textSongName"
                     style="@style/textStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/width_nameSong"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_text_name_song"
-                    android:layout_marginLeft="@dimen/margin_text_name_song"
+                    android:layout_marginStart="@dimen/margin_start_text_author_media_play"
+                    android:layout_marginLeft="@dimen/margin_start_text_author_media_play"
                     android:layout_marginTop="@dimen/margin_top"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
                     android:text="TextView"
                     app:layout_constraintEnd_toStartOf="@+id/togglePlay_Pause"
                     app:layout_constraintHorizontal_bias="0.089"
@@ -93,15 +96,18 @@
                 <TextView
                     android:id="@+id/textAuthor"
                     style="@style/textTime"
-                    android:layout_marginStart="@dimen/margin_text_author"
-                    android:layout_marginLeft="@dimen/margin_text_author"
+                    android:layout_width="@dimen/width_text_son_name_media_play"
+                    android:layout_height="@dimen/height_author"
+                    android:layout_marginStart="@dimen/margin_start_text_author_media_play"
+                    android:layout_marginLeft="@dimen/margin_start_text_author_media_play"
                     android:layout_marginBottom="@dimen/margin_bottom"
                     android:text="TextView"
                     app:layout_constraintBottom_toTopOf="@+id/guideline3"
                     app:layout_constraintEnd_toStartOf="@+id/togglePlay_Pause"
-                    app:layout_constraintHorizontal_bias="0.078"
+                    app:layout_constraintHorizontal_bias="0.09"
                     app:layout_constraintStart_toEndOf="@+id/imageAlbum"
-                    app:layout_constraintTop_toBottomOf="@+id/textSongName" />
+                    app:layout_constraintTop_toBottomOf="@+id/textSongName"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <ToggleButton
                     android:id="@+id/togglePlay_Pause"

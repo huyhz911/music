@@ -44,15 +44,15 @@ class MediaPlaybackFragment: Fragment() {
             binding.togglePlayPause.isChecked = true
         }
         // set background
-        binding.mediaPlayback?.background = BitmapDrawable(resources,songRepository.getCoverPicture(getArgs()))
+        binding.mediaPlayback?.background = BitmapDrawable(resources,getArgs().getPicture())
         // set backgroundlandscape
-        binding.mediaPlayBackLandScape?.background = BitmapDrawable(resources,songRepository.getCoverPicture(getArgs()))
+        binding.mediaPlayBackLandScape?.background = BitmapDrawable(resources,getArgs().getPicture())
         // set image popUp
-        binding.imageAlbumMediaPlay.setImageBitmap(songRepository.getCoverPicture(getArgs()))
+        binding.imageAlbumMediaPlay.setImageBitmap(getArgs().getPicture())
         //set name song
-        binding.textSongNameMediaPlay.text = songRepository.getSongName(getArgs())
+        binding.textSongNameMediaPlay.text = getArgs().songName
         //set song
-        binding.textAuthorMediaPlay.text = songRepository.getSongAuthor(getArgs())
+        binding.textAuthorMediaPlay.text = getArgs().artists
 
         binding.togglePlayPause.setOnClickListener {   if (binding.togglePlayPause.isChecked){
             (activity as ActivityMusic).mService?.resumeMusic()

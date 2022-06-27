@@ -14,40 +14,8 @@ import com.example.music.R
  */
 class SongRepository() {
     private val localMusicDataSource = LocalMusicDataSource()
-
     /**
-     * Bkav HuyNgQe: lay anh bia album
-     */
-    fun getCoverPicture(song: Song):Bitmap{
-        var art: Bitmap = BitmapFactory.decodeResource(MyApplication.getContext().resources , R.drawable.bg_default_album_art)
-                val uri = Uri.parse(song.data)
-                val mmr = MediaMetadataRetriever()
-                val bfo = BitmapFactory.Options()
-                mmr.setDataSource(MyApplication.getContext(), uri)
-                val rawArt: ByteArray? = mmr.embeddedPicture
-                if (null != rawArt){ art = BitmapFactory.decodeByteArray(rawArt, 0, rawArt.size, bfo)}
-        return  art
-    }
-    /**
-     * Bkav HuyNgQe: lay ten bai hat
-     */
-    fun getSongName(song:Song):String{
-        var songName: String =MyApplication.getContext().getString(R.string.not_found)
-                songName = song.songName.toString()
-        return  songName
-    }
-    /**
-     * Bkav HuyNgQe:lay ten tac gia
-     */
-    fun getSongAuthor(song:Song):String{
-        var songAuthor: String =MyApplication.getContext().getString(R.string.not_found)
-                songAuthor = song.artists.toString()
-
-        return  songAuthor
-    }
-
-    /**
-     * Bkav HuyNgQe:
+     * Bkav HuyNgQe:lay du lieu tu may
      */
     fun getSongs(): ArrayList<Song> {
         return localMusicDataSource.getSong()

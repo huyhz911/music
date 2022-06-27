@@ -1,12 +1,16 @@
 package com.example.music.mediaPlayService
 
-import android.app.*
-import android.app.PendingIntent.*
+import android.app.Notification
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
+import android.app.PendingIntent.getActivity
+import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
+import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
@@ -14,9 +18,9 @@ import com.example.music.ActivityMusic
 import com.example.music.MyApplication
 import com.example.music.MyApplication.Companion.CHANNEL_ID
 import com.example.music.R
+import com.example.music.allSongs.AllSongsFragment
 import com.example.music.database.Song
 import com.example.music.database.SongRepository
-import java.text.FieldPosition
 
 
 /**
@@ -24,12 +28,14 @@ import java.text.FieldPosition
  */
 class MediaPlaybackService(): Service() {
 
-    var indexSong: Int = -1
     var songRepository = SongRepository()
     var listSong = MutableLiveData<ArrayList<Song>>()
+    var mediaPlayer: MediaPlayer
 
-    private var mediaPlayer: MediaPlayer
-
+    companion object{
+        private const val SONG_ACTION ="send song"
+        private const val DATA ="data"
+    }
     init {
         listSong.value = songRepository.getSongs()
         mediaPlayer = MediaPlayer()
@@ -40,7 +46,6 @@ class MediaPlaybackService(): Service() {
      */
     fun playMusic(song: Song){
                 if (!mediaPlayer.isPlaying){
-                    mediaPlayer.stop()
                     mediaPlayer.reset()
                     val uri = Uri.parse(song.data)
                     mediaPlayer.setDataSource(MyApplication.getContext(), uri)
@@ -49,6 +54,10 @@ class MediaPlaybackService(): Service() {
                     mediaPlayer.setOnCompletionListener{
                         if (song.position < listSong.value!!.size){
                         nextSong(song.position)
+                            // send song
+                            val intent = Intent(SONG_ACTION)
+                            intent.putExtra(DATA,song.position.toString())
+                            sendBroadcast(intent)
                     }else{
                         mediaPlayer.stop()
                     } }
@@ -62,12 +71,13 @@ class MediaPlaybackService(): Service() {
 
                 }
             }
+
+
  /**
   * Bkav HuyNgQe: auto next song
   */
     private fun nextSong(position:Int){
-     val index: Int = position
-     playMusic(listSong.value!!.get(index))
+         playMusic(listSong.value!!.get(position))
     }
 
     /**
@@ -116,10 +126,10 @@ class MediaPlaybackService(): Service() {
         remoteViews.setImageViewResource(R.id.button_pause, R.drawable.ic_media_pause_dark)
 
         val notification:Notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .setCustomContentView(remoteViews)
-            .setSound(null)
             .build()
         startForeground(1, notification)
     }

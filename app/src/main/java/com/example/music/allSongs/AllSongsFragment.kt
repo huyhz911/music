@@ -1,14 +1,10 @@
 package com.example.music.allSongs
 
-import android.content.ComponentName
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.media.MediaMetadataRetriever
-import android.net.Uri
+import android.content.IntentFilter
 import android.os.Bundle
-import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.example.music.ActivityMusic
-import com.example.music.MyApplication
 import com.example.music.R
 import com.example.music.database.Song
-import com.example.music.database.SongRepository
 import com.example.music.databinding.AllSongsFragmentBinding
-import com.example.music.mediaPlayService.MediaPlaybackService
-import java.io.Serializable
+
 
 /**
  * Created by Bkav HuyNgQe on 07/06/2022.
@@ -32,35 +25,46 @@ import java.io.Serializable
 class  AllSongsFragment: Fragment() {
 
     lateinit var songPra :Song
+    lateinit var binding: AllSongsFragmentBinding
+    companion object{
+        private const val SONG_ACTION ="send song"
+        private const val DATA ="data"
+    }
+    var check: Boolean = false
+    /**
+     * Bkav HuyNgQe:
+     */
+    private var mBroadcast = object : BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            check = SONG_ACTION == intent?.action
+            if (check){
+                val index: String? = intent?.getStringExtra(DATA)
+                if (index != null) {
+                   updateSong(index.toInt())
+                }
+            }
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
 
-        val binding = DataBindingUtil.inflate<AllSongsFragmentBinding>(inflater,
+        binding = DataBindingUtil.inflate(inflater,
             R.layout.all_songs_fragment,
             container,
             false)
-
-        val songRepository = SongRepository()
         binding.lifecycleOwner = this
 
 
         // su ly su kien khi click vao song item
         val adapter = SongAdapter(SongListener { song ->
-            // start service
-       //     val intent = Intent(activity, MediaPlaybackService::class.java)
-//            val bundle= Bundle()
-//            val picture = GetSongPicture(song)
-//            bundle.putSerializable("pictureSong", picture)
-//            intent.putExtras(bundle)
-//            activity?.startService(intent)
             val mediaPlaybackService =  (activity as ActivityMusic).mService
             mediaPlaybackService?.sendNotification(song)
             mediaPlaybackService?.playMusic(song)
-            binding.imageAlbum.setImageBitmap(songRepository.getCoverPicture(song))
-            binding.textSongName.text = songRepository.getSongName(song)
+            binding.imageAlbum.setImageBitmap(song.getPicture())
+            binding.textSongName.text = song.songName
             binding.textAuthor.text = song.artists
             binding.songPopUp.visibility = View.VISIBLE
             binding.togglePlayPause.isChecked = true
@@ -83,11 +87,25 @@ class  AllSongsFragment: Fragment() {
         }else{
             (activity as ActivityMusic).mService?.pauseMusic()
 
+         }
         }
-        }
+        val intentFilter= IntentFilter(SONG_ACTION)
+        requireActivity().registerReceiver(mBroadcast,intentFilter);
 
-//        (activity as ActivityMusic).mService
         return  binding.root
+    }
+
+    fun updateSong(index: Int){
+            val songNext: Song = (activity as ActivityMusic).listSong.value!!.get(index)
+            binding.imageAlbum.setImageBitmap(songNext.getPicture())
+            binding.textSongName.text = songNext.songName
+            binding.textAuthor.text = songNext.artists
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        requireActivity().unregisterReceiver(mBroadcast)
     }
 
 

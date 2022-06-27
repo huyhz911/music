@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/notification"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/height_notification"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
 
@@ -11,13 +11,11 @@
         android:id="@+id/imageAlbumNotification"
         android:layout_width="@dimen/width_imageAlbumNotification"
         android:layout_height="@dimen/height_imageAlbumNotification"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         app:srcCompat="@drawable/bg_default_album_art" />
 
@@ -27,11 +25,9 @@
         android:layout_width="@dimen/width_back_notification"
         android:layout_height="@dimen/height_back_notification"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginRight="75dp"
-        android:layout_marginBottom="23dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="246dp"
         android:layout_toStartOf="@+id/background_play_pause_button"
         android:layout_toLeftOf="@+id/background_play_pause_button"
         app:srcCompat="@drawable/ic_rew_dark" />
@@ -40,12 +36,9 @@
         android:id="@+id/background_play_pause_button"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginRight="23dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="50dp"
         android:layout_toStartOf="@+id/next_notification"
         android:layout_toLeftOf="@+id/next_notification"
         app:srcCompat="@drawable/ic_fab_play_btn_normal" />
@@ -57,37 +50,35 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="26dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="23dp"
+        android:layout_marginRight="58dp"
         app:srcCompat="@drawable/ic_fwd_dark" />
 
     <ImageView
         android:id="@+id/button_play"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="39dp"
+        android:layout_height="38dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginRight="29dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginRight="31dp"
         android:layout_toStartOf="@+id/next_notification"
         android:layout_toLeftOf="@+id/next_notification"
+        android:visibility="visible"
         app:srcCompat="@drawable/ic_media_play_dark" />
 
     <ImageView
         android:id="@+id/button_pause"
-        android:layout_width="51dp"
-        android:layout_height="49dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="84dp"
-        android:layout_marginRight="84dp"
-        android:layout_marginBottom="15dp"
-        app:srcCompat="@drawable/ic_media_pause_dark"
-        android:visibility="gone"/>
+        android:layout_width="39dp"
+        android:layout_height="38dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginRight="31dp"
+        android:layout_toStartOf="@+id/next_notification"
+        android:layout_toLeftOf="@+id/next_notification"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_media_pause_dark" />
 
 </RelativeLayout>

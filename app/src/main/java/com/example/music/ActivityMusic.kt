@@ -1,18 +1,16 @@
 package com.example.music
 
 import android.app.ActivityManager
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.view.*
+import android.view.Window
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
+import com.example.music.allSongs.AllSongsFragment
 import com.example.music.database.Song
 import com.example.music.databinding.ActivityMainBinding
 import com.example.music.mediaPlayService.MediaPlaybackService
@@ -27,14 +25,13 @@ class ActivityMusic : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val window: Window = this@ActivityMusic.window
         window.statusBarColor = ContextCompat.getColor(this@ActivityMusic, R.color.statusbar)
-
-
     }
 
     public var mService: MediaPlaybackService? = null
@@ -75,7 +72,7 @@ class ActivityMusic : AppCompatActivity() {
         }
     }
 
-    fun isServiceRunning(serviceClassName: String?): Boolean {
+    private fun isServiceRunning(serviceClassName: String?): Boolean {
         val activityManager =
             MyApplication.getContext().getSystemService(ACTIVITY_SERVICE) as ActivityManager
         val services: List<ActivityManager.RunningServiceInfo> = activityManager.getRunningServices(Int.MAX_VALUE)

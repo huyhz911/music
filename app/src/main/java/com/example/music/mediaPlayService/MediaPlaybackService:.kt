@@ -8,9 +8,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
-import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
@@ -18,7 +16,6 @@ import com.example.music.ActivityMusic
 import com.example.music.MyApplication
 import com.example.music.MyApplication.Companion.CHANNEL_ID
 import com.example.music.R
-import com.example.music.allSongs.AllSongsFragment
 import com.example.music.database.Song
 import com.example.music.database.SongRepository
 
@@ -30,10 +27,11 @@ class MediaPlaybackService(): Service() {
 
     var songRepository = SongRepository()
     var listSong = MutableLiveData<ArrayList<Song>>()
+    var position: Int = -1
     var mediaPlayer: MediaPlayer
 
     companion object{
-        private const val SONG_ACTION ="send song"
+        private const val SONG_UPDATE_UI ="send song"
         private const val DATA ="data"
     }
     init {
@@ -45,40 +43,37 @@ class MediaPlaybackService(): Service() {
      * Bkav HuyNgQe: play music
      */
     fun playMusic(song: Song){
-                if (!mediaPlayer.isPlaying){
                     mediaPlayer.reset()
                     val uri = Uri.parse(song.data)
                     mediaPlayer.setDataSource(MyApplication.getContext(), uri)
                     mediaPlayer.prepare()
                     mediaPlayer.start()
+                    position = song.position
                     mediaPlayer.setOnCompletionListener{
                         if (song.position < listSong.value!!.size){
-                        nextSong(song.position)
+                        nextSongAuto(song.position)
                             // send song
-                            val intent = Intent(SONG_ACTION)
+                            val intent = Intent(SONG_UPDATE_UI)
                             intent.putExtra(DATA,song.position.toString())
                             sendBroadcast(intent)
                     }else{
                         mediaPlayer.stop()
                     } }
-                }else{
-                    mediaPlayer.stop()
-                    mediaPlayer.reset()
-                    val uri = Uri.parse(song.data)
-                    mediaPlayer.setDataSource(MyApplication.getContext(), uri)
-                    mediaPlayer.prepare()
-                    mediaPlayer.start()
-
-                }
             }
-
 
  /**
   * Bkav HuyNgQe: auto next song
   */
-    private fun nextSong(position:Int){
+    fun nextSongAuto(position:Int){
          playMusic(listSong.value!!.get(position))
     }
+    /**
+     * Bkav HuyNgQe: next song do bam nut next
+     */
+    fun nextSong(song: Song){
+        nextSongAuto(song.position)
+    }
+
 
     /**
      * Bkav HuyNgQe: pause music

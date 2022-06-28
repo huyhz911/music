@@ -7,6 +7,9 @@ import androidx.room.PrimaryKey
 /**
  * Created by Bkav HuyNgQe on 16/06/2022.
  */
+/**
+ * Bkav HuyNgQe: tao bang
+ */
 @Entity(tableName = "favorite_songs_provider")
 data class FavoriteSongs(
     @PrimaryKey(autoGenerate = true)

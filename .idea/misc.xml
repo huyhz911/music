@@ -12,7 +12,7 @@
         <entry key="app/src/main/res/drawable/play_pause_button.xml" value="0.262" />
         <entry key="app/src/main/res/drawable/play_pause_white.xml" value="0.232" />
         <entry key="app/src/main/res/drawable/repeat_button.xml" value="0.2075" />
-        <entry key="app/src/main/res/layout-land/media_play_back_fragment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-land/media_play_back_fragment.xml" value="0.5" />
         <entry key="app/src/main/res/layout-v21/all_songs_fragment.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/all_songs_fragment.xml" value="0.30229325920778316" />

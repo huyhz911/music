@@ -27,16 +27,16 @@ class  AllSongsFragment: Fragment() {
     lateinit var songPra :Song
     lateinit var binding: AllSongsFragmentBinding
     companion object{
-        private const val SONG_ACTION ="send song"
+        private const val SONG_UPDATE_UI ="send song"
         private const val DATA ="data"
     }
     var check: Boolean = false
     /**
-     * Bkav HuyNgQe:
+     * Bkav HuyNgQe: nhan data tu service
      */
     private var mBroadcast = object : BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
-            check = SONG_ACTION == intent?.action
+            check = SONG_UPDATE_UI == intent?.action
             if (check){
                 val index: String? = intent?.getStringExtra(DATA)
                 if (index != null) {
@@ -57,8 +57,7 @@ class  AllSongsFragment: Fragment() {
             false)
         binding.lifecycleOwner = this
 
-
-        // su ly su kien khi click vao song item
+        /*Bkav HuyNgQe: su ly su kien khi click vao song item */
         val adapter = SongAdapter(SongListener { song ->
             val mediaPlaybackService =  (activity as ActivityMusic).mService
             mediaPlaybackService?.sendNotification(song)
@@ -77,7 +76,7 @@ class  AllSongsFragment: Fragment() {
                 adapter.submitList(it)
             }
         })
-        // chuyen doi so sang cho media play fragment
+        /*Bkav HuyNgQe: chuyen doi so sang cho media play fragment */
         binding.relativeLayout.setOnClickListener { view: View ->
             view.findNavController().navigate(AllSongsFragmentDirections.actionAllSongsFragmentToMediaPlaybackFragment2(songPra))
         }
@@ -89,12 +88,14 @@ class  AllSongsFragment: Fragment() {
 
          }
         }
-        val intentFilter= IntentFilter(SONG_ACTION)
+        val intentFilter= IntentFilter(SONG_UPDATE_UI)
         requireActivity().registerReceiver(mBroadcast,intentFilter);
 
         return  binding.root
     }
-
+/**
+ * Bkav HuyNgQe: update thong tin bai hat
+ */
     fun updateSong(index: Int){
             val songNext: Song = (activity as ActivityMusic).listSong.value!!.get(index)
             binding.imageAlbum.setImageBitmap(songNext.getPicture())

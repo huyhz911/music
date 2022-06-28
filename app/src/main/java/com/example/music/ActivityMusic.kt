@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-import com.example.music.allSongs.AllSongsFragment
 import com.example.music.database.Song
 import com.example.music.databinding.ActivityMainBinding
 import com.example.music.mediaPlayService.MediaPlaybackService
@@ -24,8 +23,6 @@ class ActivityMusic : AppCompatActivity() {
     var listSong = MutableLiveData<ArrayList<Song>>()
 
     private lateinit var binding: ActivityMainBinding
-
-
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +52,7 @@ class ActivityMusic : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Bind to LocalService
+        /*Bkav HuyNgQe:  Bind to LocalService */
         Intent(this, MediaPlaybackService::class.java).also { intent ->
             if (!isServiceRunning(MediaPlaybackService::class.java.name)) {
                 startService(intent)

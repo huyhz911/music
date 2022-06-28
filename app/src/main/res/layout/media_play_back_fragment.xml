@@ -192,18 +192,18 @@
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/textTimeCurrent"
                     style="@style/textTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="22dp"
                     android:layout_marginLeft="22dp"
                     android:text="00:00"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/textTimeDuration"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/textTimeDuration"
                     style="@style/textTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,9 +219,9 @@
 
         <SeekBar
             android:id="@+id/seekBarMediaPlay"
-            android:layout_width="421dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="75dp"
+            android:layout_marginBottom="76dp"
             android:progressTint="@color/backgroundColor"
             android:thumbTint="@color/backgroundColor"
             app:layout_constraintBottom_toBottomOf="parent"

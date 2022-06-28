@@ -121,10 +121,10 @@ class MediaPlaybackFragment: Fragment() {
         binding.nextButton.setOnClickListener {
             val index: Int? = (activity as ActivityMusic).mService?.index
             val listSize: Int? = ((activity as ActivityMusic).mService?.listSong?.value?.size)
-            if (  index == listSize?.plus(1)){
+            if (  (index!! + 1) == listSize){
                 val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(0)
                 if (song != null) {
-                    (activity as ActivityMusic).mService?.nextSong(song)
+                    (activity as ActivityMusic).mService?.nextSongAuto(0)
                     updateSong(song)
                     updateTimeCurrent(song)
                     updateTimeDuration(song)

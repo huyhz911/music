@@ -41,8 +41,7 @@ class LocalMusicDataSource {
                         cursor.getStringOrNull(5),
                         cursor.getStringOrNull(1),
                         cursor.getLongOrNull(4),
-                        cursor.getStringOrNull(2),
-                        songs.size +1)
+                        cursor.getStringOrNull(2))
                     songs.add(song)
                     cursor.moveToNext()
                 }

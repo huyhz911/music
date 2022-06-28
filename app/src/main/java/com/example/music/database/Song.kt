@@ -19,8 +19,7 @@ class Song( var songID: Int?,
             var albumName: String?,
             var artists: String?,
             var duration: Long?,
-            var data: String?,
-            var position: Int): Parcelable, Serializable {
+            var data: String?): Parcelable, Serializable {
     /**
      * Bkav HuyNgQe:lay anh bia ra de chuyen sang thong bao
      */

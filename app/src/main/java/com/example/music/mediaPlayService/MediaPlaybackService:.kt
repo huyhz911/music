@@ -48,13 +48,13 @@ class MediaPlaybackService(): Service() {
                     mediaPlayer.setDataSource(MyApplication.getContext(), uri)
                     mediaPlayer.prepare()
                     mediaPlayer.start()
-                    index = song.position - 1
+                    index = listSong.value!!.indexOf(song)
                     mediaPlayer.setOnCompletionListener{
-                        if (song.position < listSong.value!!.size){
-                        nextSongAuto(song.position)
+                        if (index < listSong.value!!.size){
+                        nextSongAuto(index +1 )
                             // send song
                             val intent = Intent(SONG_UPDATE_UI)
-                            intent.putExtra(DATA,song.position.toString())
+                            intent.putExtra(DATA,(index+1).toString())
                             sendBroadcast(intent)
                     }else{
                         mediaPlayer.stop()
@@ -64,15 +64,15 @@ class MediaPlaybackService(): Service() {
  /**
   * Bkav HuyNgQe: auto next song
   */
-    fun nextSongAuto(position:Int){
-         playMusic(listSong.value!!.get(position))
+    fun nextSongAuto(index:Int){
+         playMusic(listSong.value!!.get(index))
     }
     /**
      * Bkav HuyNgQe: next song do bam nut next
      */
     fun nextSong(song: Song?){
         if (song != null) {
-            nextSongAuto(song.position)
+            nextSongAuto(index +1)
         }
     }
 

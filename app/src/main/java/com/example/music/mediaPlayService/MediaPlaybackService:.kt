@@ -75,8 +75,6 @@ class MediaPlaybackService(): Service() {
             nextSongAuto(index +1)
         }
     }
-
-
     /**
      * Bkav HuyNgQe: pause music
      */

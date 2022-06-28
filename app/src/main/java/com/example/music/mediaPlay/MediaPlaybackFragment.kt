@@ -44,7 +44,7 @@ class MediaPlaybackFragment: Fragment() {
                 if (song != null) {
                     updateSong(song)
                     updateTimeDuration(song)
-                    updateTimeCurrent(song)
+                    updateTimeCurrent()
                 }
             }
         }
@@ -97,7 +97,7 @@ class MediaPlaybackFragment: Fragment() {
         /*Bkav HuyNgQe:  update time current */
         handler.postDelayed(object :Runnable{
             override fun run() {
-                updateTimeCurrent(getArgs()).let {
+                updateTimeCurrent().let {
                     val timeS = (it?.div(1000))?.toInt()
                     val min = (timeS?.div(60))
                     val sec = (timeS?.rem(60))
@@ -126,7 +126,7 @@ class MediaPlaybackFragment: Fragment() {
                 if (song != null) {
                     (activity as ActivityMusic).mService?.nextSongAuto(0)
                     updateSong(song)
-                    updateTimeCurrent(song)
+                    updateTimeCurrent()
                     updateTimeDuration(song)
                 }
             }else{
@@ -134,11 +134,41 @@ class MediaPlaybackFragment: Fragment() {
                 (activity as ActivityMusic).mService?.nextSong(song)
                 if (song != null) {
                     updateSong(song)
-                    updateTimeCurrent(song)
+                    updateTimeCurrent()
                     updateTimeDuration(song)
                 }
             }
          }
+        binding.backButton.setOnClickListener {
+            val index: Int? = (activity as ActivityMusic).mService?.index
+            val listSize: Int? = ((activity as ActivityMusic).mService?.listSong?.value?.size)
+            if(index == 0){
+                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(listSize!! -1)
+                if (song != null) {
+                    (activity as ActivityMusic).mService?.nextSongAuto(listSize!! -1)
+                    updateSong(song)
+                    updateTimeCurrent()
+                    updateTimeDuration(song)
+                }
+            }else{
+                if (updateTimeCurrent()!! < 3000 ){
+                    val songBack: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!! - 1)
+                    if (index != null) {
+                        (activity as ActivityMusic).mService?.nextSongAuto(index - 1)
+                    }
+                    if (songBack != null) {
+                        updateSong(songBack)
+                        updateTimeCurrent()
+                        updateTimeDuration(songBack)
+                    }
+                }else{
+                    if (index != null) {
+                        (activity as ActivityMusic).mService?.nextSongAuto(index)
+                    }
+                }
+            }
+
+        }
         return binding.root
     }
     /**
@@ -176,7 +206,7 @@ class MediaPlaybackFragment: Fragment() {
     /**
      * Bkav HuyNgQe: update timeCurrent
      */
-    fun updateTimeCurrent(song:Song): Int? {
+    fun updateTimeCurrent(): Int? {
         return (activity as ActivityMusic).mService?.mediaPlayer?.currentPosition
     }
 

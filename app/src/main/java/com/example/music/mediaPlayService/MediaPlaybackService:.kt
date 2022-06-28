@@ -27,7 +27,7 @@ class MediaPlaybackService(): Service() {
 
     var songRepository = SongRepository()
     var listSong = MutableLiveData<ArrayList<Song>>()
-    var position: Int = -1
+    var index: Int = -1
     var mediaPlayer: MediaPlayer
 
     companion object{
@@ -48,7 +48,7 @@ class MediaPlaybackService(): Service() {
                     mediaPlayer.setDataSource(MyApplication.getContext(), uri)
                     mediaPlayer.prepare()
                     mediaPlayer.start()
-                    position = song.position
+                    index = song.position - 1
                     mediaPlayer.setOnCompletionListener{
                         if (song.position < listSong.value!!.size){
                         nextSongAuto(song.position)
@@ -70,8 +70,10 @@ class MediaPlaybackService(): Service() {
     /**
      * Bkav HuyNgQe: next song do bam nut next
      */
-    fun nextSong(song: Song){
-        nextSongAuto(song.position)
+    fun nextSong(song: Song?){
+        if (song != null) {
+            nextSongAuto(song.position)
+        }
     }
 
 

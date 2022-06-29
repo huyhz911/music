@@ -84,4 +84,9 @@
     <dimen name="margin_height_text_name_song">28dp</dimen>
     <dimen name="height_text_name_song">30dp</dimen>
     <dimen name="height_author">30dp</dimen>
+    <dimen name="height_shuffle">40dp</dimen>
+    <dimen name="width_shuffle">40dp</dimen>
+    <dimen name="marginEnd_shuffle">40dp</dimen>
+    <dimen name="shuffleOff">30dp</dimen>
+    <dimen name="bottomShuffleOff">10dp</dimen>
 </resources>

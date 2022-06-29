@@ -29,6 +29,14 @@ class ActivityMusic : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val window: Window = this@ActivityMusic.window
         window.statusBarColor = ContextCompat.getColor(this@ActivityMusic, R.color.statusbar)
+
+        /*Bkav HuyNgQe:  Bind to LocalService */
+        Intent(this, MediaPlaybackService::class.java).also { intent ->
+            if (!isServiceRunning(MediaPlaybackService::class.java.name)) {
+                startService(intent)
+            }
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     public var mService: MediaPlaybackService? = null
@@ -52,13 +60,6 @@ class ActivityMusic : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        /*Bkav HuyNgQe:  Bind to LocalService */
-        Intent(this, MediaPlaybackService::class.java).also { intent ->
-            if (!isServiceRunning(MediaPlaybackService::class.java.name)) {
-                startService(intent)
-            }
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
     }
 
     override fun onStop() {

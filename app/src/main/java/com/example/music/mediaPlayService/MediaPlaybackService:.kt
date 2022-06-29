@@ -9,6 +9,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
@@ -49,13 +50,14 @@ class MediaPlaybackService(): Service() {
                     mediaPlayer.prepare()
                     mediaPlayer.start()
                     index = listSong.value!!.indexOf(song)
+                    Log.e("huy","$index")
                     mediaPlayer.setOnCompletionListener{
-                        if (index < listSong.value!!.size){
-                        nextSongAuto(index +1 )
+                        if ((index + 1) < listSong.value!!.size){
                             // send song
                             val intent = Intent(SONG_UPDATE_UI)
-                            intent.putExtra(DATA,(index+1).toString())
+                            intent.putExtra(DATA,(index + 1).toString())
                             sendBroadcast(intent)
+                        nextSongAuto(index + 1 )
                     }else{
                         mediaPlayer.stop()
                     } }
@@ -72,7 +74,8 @@ class MediaPlaybackService(): Service() {
      */
     fun nextSong(song: Song?){
         if (song != null) {
-            nextSongAuto(index +1)
+           val indexNext:Int = listSong.value!!.indexOf(song)
+            nextSongAuto(indexNext)
         }
     }
     /**

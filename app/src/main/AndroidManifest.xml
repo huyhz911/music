@@ -22,7 +22,8 @@
                  android:enabled="true" />
         <activity
             android:name=".ActivityMusic"
-            android:exported="true">
+            android:exported="true"
+            android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

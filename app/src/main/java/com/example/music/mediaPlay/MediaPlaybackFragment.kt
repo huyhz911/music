@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.example.music.allSongs.SongAdapter
 import com.example.music.allSongs.SongListener
 import com.example.music.database.Song
 import com.example.music.databinding.MediaPlayBackFragmentBinding
+import kotlin.random.Random
 
 /**
  * Created by Bkav HuyNgQe on 07/06/2022.
@@ -89,19 +91,22 @@ class MediaPlaybackFragment: Fragment() {
         val handler = Handler()
         handler.postDelayed(object :Runnable{
             override fun run() {
-                binding.seekBarMediaPlay.progress = (activity as ActivityMusic).mService?.mediaPlayer!!.currentPosition
+                activity?.let {
+                    binding.seekBarMediaPlay.progress = (it as ActivityMusic).mService?.mediaPlayer!!.currentPosition
+                }
                 handler.postDelayed(this,100)
             }
-
         },0)
         /*Bkav HuyNgQe:  update time current */
         handler.postDelayed(object :Runnable{
             override fun run() {
-                updateTimeCurrent().let {
-                    val timeS = (it?.div(1000))?.toInt()
-                    val min = (timeS?.div(60))
-                    val sec = (timeS?.rem(60))
-                    binding.textTimeCurrent.text = ("$min: $sec").toString()
+                activity?.let {
+                    updateTimeCurrent().let {
+                        val timeS = (it?.div(1000))?.toInt()
+                        val min = (timeS?.div(60))
+                        val sec = (timeS?.rem(60))
+                        binding.textTimeCurrent.text = ("$min: $sec").toString()
+                    }
                 }
                 handler.postDelayed(this,1000)
             }
@@ -130,7 +135,7 @@ class MediaPlaybackFragment: Fragment() {
                     updateTimeDuration(song)
                 }
             }else{
-                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!! + 1)
+                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index + 1)
                 (activity as ActivityMusic).mService?.nextSong(song)
                 if (song != null) {
                     updateSong(song)
@@ -139,6 +144,10 @@ class MediaPlaybackFragment: Fragment() {
                 }
             }
          }
+        /*Bkav HuyNgQe: lo gic back button
+        *   neu thoi gian hien tai < 3s thi quay ve bai truoc
+        * neu thoi gian hien tai >3 play lai bai nhac do
+        *  */
         binding.backButton.setOnClickListener {
             val index: Int? = (activity as ActivityMusic).mService?.index
             val listSize: Int? = ((activity as ActivityMusic).mService?.listSong?.value?.size)
@@ -168,6 +177,20 @@ class MediaPlaybackFragment: Fragment() {
                 }
             }
 
+        }
+        /*Bkav HuyNgQe: lo gic nut shuffle */
+        binding.imageShuffleOff.setOnClickListener {
+            binding.imageShuffleOff.visibility = View.GONE
+            binding.imageShuffleOn.visibility = View.VISIBLE
+            val sumIndexSong: Int? = (activity as ActivityMusic).listSong.value?.size?.minus(1)
+            val indexRandom: Int = (0..sumIndexSong!!).random()
+            val song: Song = (activity as ActivityMusic).listSong.value!!.get(indexRandom)
+            updateSong(song)
+            updateTimeCurrent()
+            updateTimeDuration(song)
+            (activity as ActivityMusic).mService?.nextSongAuto(indexRandom)
+            binding.imageShuffleOff.visibility = View.VISIBLE
+            binding.imageShuffleOn.visibility = View.GONE
         }
         return binding.root
     }
@@ -209,7 +232,9 @@ class MediaPlaybackFragment: Fragment() {
     fun updateTimeCurrent(): Int? {
         return (activity as ActivityMusic).mService?.mediaPlayer?.currentPosition
     }
-
+/**
+ * Bkav HuyNgQe:khi onstop thi bo dang ki broadcast
+ */
     override fun onStop() {
         super.onStop()
         requireActivity().unregisterReceiver(mBroadcast)

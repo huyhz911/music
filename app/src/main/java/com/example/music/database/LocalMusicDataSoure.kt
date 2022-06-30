@@ -3,7 +3,6 @@ package com.example.music.database
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import com.example.music.MyApplication
@@ -27,12 +26,16 @@ class LocalMusicDataSource {
             MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media._ID
         )
-        val sortOrder = MediaStore.Audio.AudioColumns.TITLE + " COLLATE LOCALIZED ASC"
+        val sortOrder = MediaStore.Audio.AudioColumns.TITLE
 
-        var cursor: Cursor? = null
-            val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            cursor =
-                MyApplication.instance?.contentResolver?.query(uri,projection,null,null, sortOrder)
+
+        val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
+        val cursor: Cursor? = MyApplication.instance?.contentResolver?.query(uri,
+            projection,
+            selection,
+            null,
+            sortOrder)
             if (cursor != null) {
                 cursor.moveToFirst()
                 while (!cursor.isAfterLast) {

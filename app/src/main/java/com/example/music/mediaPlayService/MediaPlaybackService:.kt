@@ -9,7 +9,6 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
@@ -26,14 +25,19 @@ import com.example.music.database.SongRepository
  */
 class MediaPlaybackService(): Service() {
 
+    val intent = Intent(SONG_UPDATE_UI)
     var songRepository = SongRepository()
     var listSong = MutableLiveData<ArrayList<Song>>()
     var index: Int = -1
     var mediaPlayer: MediaPlayer
+    var checkShuffle :Boolean = false
+    var checkAutoNext: Boolean = false
 
     companion object{
         private const val SONG_UPDATE_UI ="send song"
         private const val DATA ="data"
+        private const val SONG_UPDATE_UI_SHUFFLE ="send song shuffle"
+        private const val DATASHUFFLE ="data shuffle"
     }
     init {
         listSong.value = songRepository.getSongs()
@@ -43,31 +47,51 @@ class MediaPlaybackService(): Service() {
     /**
      * Bkav HuyNgQe: play music
      */
-    fun playMusic(song: Song){
-                    mediaPlayer.reset()
-                    val uri = Uri.parse(song.data)
-                    mediaPlayer.setDataSource(MyApplication.getContext(), uri)
-                    mediaPlayer.prepare()
-                    mediaPlayer.start()
-                    index = listSong.value!!.indexOf(song)
-                    Log.e("huy","$index")
-                    mediaPlayer.setOnCompletionListener{
-                        if ((index + 1) < listSong.value!!.size){
-                            // send song
-                            val intent = Intent(SONG_UPDATE_UI)
-                            intent.putExtra(DATA,(index + 1).toString())
-                            sendBroadcast(intent)
-                        nextSongAuto(index + 1 )
-                    }else{
-                        mediaPlayer.stop()
-                    } }
+    fun playMusic(song: Song) {
+        mediaPlayer.reset()
+        val uri = Uri.parse(song.data)
+        mediaPlayer.setDataSource(MyApplication.getContext(), uri)
+        mediaPlayer.prepare()
+        mediaPlayer.start()
+        index = listSong.value!!.indexOf(song)
+    }
+    /**
+     * Bkav HuyNgQe: play random
+     */
+    fun playRandom(){
+        checkShuffle = true
+        val sumIndexSong: Int = listSong.value!!.size - 1
+        val indexRandom = (0..sumIndexSong).random()
+        val song: Song = listSong.value!!.get(indexRandom)
+        intent.putExtra(DATASHUFFLE, (indexRandom).toString())
+        sendBroadcast(intent)
+        playMusic(song)
+        mediaPlayer.setOnCompletionListener {
+            if (checkShuffle) {
+                playRandom()
+            } else {
+                nextSongAuto(indexRandom + 1)
             }
+        }
+
+    }
 
  /**
   * Bkav HuyNgQe: auto next song
   */
     fun nextSongAuto(index:Int){
          playMusic(listSong.value!!.get(index))
+     mediaPlayer.setOnCompletionListener {
+         if ((index + 1) < listSong.value!!.size) {
+             // send song
+             intent.putExtra(DATA, (index + 1).toString())
+             sendBroadcast(intent)
+             nextSongAuto(index + 1)
+         } else {
+             mediaPlayer.stop()
+         }
+     }
+
     }
     /**
      * Bkav HuyNgQe: next song do bam nut next

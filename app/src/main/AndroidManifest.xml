@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:requestLegacyExternalStorage="true"
@@ -18,8 +19,10 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:name=".MyApplication"
         tools:targetApi="31">
-        <service android:name=".mediaPlayService.MediaPlaybackService"
-                 android:enabled="true" />
+        <service
+            android:name=".mediaPlayService.MediaPlaybackService"
+            android:enabled="true"
+            android:exported="false" />
         <activity
             android:name=".ActivityMusic"
             android:exported="true"

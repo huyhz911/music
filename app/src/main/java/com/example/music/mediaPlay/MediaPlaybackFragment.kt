@@ -22,6 +22,7 @@ import com.example.music.allSongs.SongAdapter
 import com.example.music.allSongs.SongListener
 import com.example.music.database.Song
 import com.example.music.databinding.MediaPlayBackFragmentBinding
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.random.Random
 
 /**
@@ -29,11 +30,15 @@ import kotlin.random.Random
  */
 class MediaPlaybackFragment: Fragment() {
     private lateinit var binding: MediaPlayBackFragmentBinding
+    val handler = Handler()
     companion object{
         private const val SONG_UPDATE_UI ="send song"
         private const val DATA ="data"
+        private const val SONG_UPDATE_UI_SHUFFLE ="send song shuffle"
+        private const val DATASHUFFLE ="data shuffle"
     }
     var check: Boolean = false
+    var checkShuffle: Boolean = false
     /**
      * Bkav HuyNgQe: nhan data tu service de auto next song
      */
@@ -46,7 +51,14 @@ class MediaPlaybackFragment: Fragment() {
                 if (song != null) {
                     updateSong(song)
                     updateTimeDuration(song)
-                    updateTimeCurrent()
+                    updateTimeCurrent(song)
+                }
+                val indexShuffle: String? = intent?.getStringExtra(DATASHUFFLE)
+                val songShuffle: Song? = indexShuffle?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
+                if (songShuffle != null) {
+                    updateSong(songShuffle)
+                    updateTimeDuration(songShuffle)
+                    updateTimeCurrent(songShuffle)
                 }
             }
         }
@@ -86,42 +98,7 @@ class MediaPlaybackFragment: Fragment() {
         requireActivity().registerReceiver(mBroadcast,intentFilter);
        /*Bkav HuyNgQe: update time duration */
         updateTimeDuration(getArgs())
-        /*Bkav HuyNgQe: update seek bar */
-        binding.seekBarMediaPlay.max = getArgs().duration!!.toInt()
-        val handler = Handler()
-        handler.postDelayed(object :Runnable{
-            override fun run() {
-                activity?.let {
-                    binding.seekBarMediaPlay.progress = (it as ActivityMusic).mService?.mediaPlayer!!.currentPosition
-                }
-                handler.postDelayed(this,100)
-            }
-        },0)
-        /*Bkav HuyNgQe:  update time current */
-        handler.postDelayed(object :Runnable{
-            override fun run() {
-                activity?.let {
-                    updateTimeCurrent().let {
-                        val timeS = (it?.div(1000))?.toInt()
-                        val min = (timeS?.div(60))
-                        val sec = (timeS?.rem(60))
-                        binding.textTimeCurrent.text = ("$min: $sec").toString()
-                    }
-                }
-                handler.postDelayed(this,1000)
-            }
-        },0)
-        binding.seekBarMediaPlay.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser){
-                    (activity as ActivityMusic).mService?.mediaPlayer?.seekTo(progress)
-                }
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
-        })
+         updateTimeCurrent(getArgs())
         /*Bkav HuyNgQe:chuyen bai hat khi bam nut next */
         binding.nextButton.setOnClickListener {
             val index: Int? = (activity as ActivityMusic).mService?.index
@@ -131,7 +108,7 @@ class MediaPlaybackFragment: Fragment() {
                 if (song != null) {
                     (activity as ActivityMusic).mService?.nextSongAuto(0)
                     updateSong(song)
-                    updateTimeCurrent()
+                    updateTimeCurrent(song)
                     updateTimeDuration(song)
                 }
             }else{
@@ -139,7 +116,7 @@ class MediaPlaybackFragment: Fragment() {
                 (activity as ActivityMusic).mService?.nextSong(song)
                 if (song != null) {
                     updateSong(song)
-                    updateTimeCurrent()
+                    updateTimeCurrent(song)
                     updateTimeDuration(song)
                 }
             }
@@ -156,18 +133,18 @@ class MediaPlaybackFragment: Fragment() {
                 if (song != null) {
                     (activity as ActivityMusic).mService?.nextSongAuto(listSize!! -1)
                     updateSong(song)
-                    updateTimeCurrent()
+                    updateTimeCurrent(song)
                     updateTimeDuration(song)
                 }
             }else{
-                if (updateTimeCurrent()!! < 3000 ){
+                if (getCurrentTime()!! < 3000 ){
                     val songBack: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!! - 1)
                     if (index != null) {
                         (activity as ActivityMusic).mService?.nextSongAuto(index - 1)
                     }
                     if (songBack != null) {
                         updateSong(songBack)
-                        updateTimeCurrent()
+                        updateTimeCurrent(songBack)
                         updateTimeDuration(songBack)
                     }
                 }else{
@@ -178,19 +155,37 @@ class MediaPlaybackFragment: Fragment() {
             }
 
         }
+
+
+
         /*Bkav HuyNgQe: lo gic nut shuffle */
         binding.imageShuffleOff.setOnClickListener {
-            binding.imageShuffleOff.visibility = View.GONE
-            binding.imageShuffleOn.visibility = View.VISIBLE
-            val sumIndexSong: Int? = (activity as ActivityMusic).listSong.value?.size?.minus(1)
-            val indexRandom: Int = (0..sumIndexSong!!).random()
-            val song: Song = (activity as ActivityMusic).listSong.value!!.get(indexRandom)
-            updateSong(song)
-            updateTimeCurrent()
-            updateTimeDuration(song)
-            (activity as ActivityMusic).mService?.nextSongAuto(indexRandom)
+                binding.imageShuffleOff.visibility = View.GONE
+                binding.imageShuffleOn.visibility = View.VISIBLE
+                (activity as ActivityMusic).mService?.playRandom()
+                val index: Int? =  (activity as ActivityMusic).mService?.index
+                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!!)
+                if (song != null) {
+                    updateSong(song)
+                    updateTimeCurrent(song)
+                    updateTimeDuration(song)
+                }
+        }
+        /*Bkav HuyNgQe: turn off shuffle */
+        binding.imageShuffleOn.setOnClickListener {
             binding.imageShuffleOff.visibility = View.VISIBLE
             binding.imageShuffleOn.visibility = View.GONE
+            val index: Int? =  (activity as ActivityMusic).mService?.index
+            if (index != null) {
+                (activity as ActivityMusic).mService?.nextSongAuto(index+1)
+            }
+            val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!! +1)
+            if (song != null) {
+                updateSong(song)
+                updateTimeCurrent(song)
+                updateTimeDuration(song)
+            }
+
         }
         return binding.root
     }
@@ -229,7 +224,41 @@ class MediaPlaybackFragment: Fragment() {
     /**
      * Bkav HuyNgQe: update timeCurrent
      */
-    fun updateTimeCurrent(): Int? {
+    fun updateTimeCurrent(song:Song) {
+        /*Bkav HuyNgQe: update seek bar */
+        binding.seekBarMediaPlay.max = song.duration!!.toInt()
+        binding.seekBarMediaPlay.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser){
+                    (activity as ActivityMusic).mService?.mediaPlayer?.seekTo(progress)
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+        })
+        /*Bkav HuyNgQe:  update time current */
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                activity?.let {
+                    val timeCurrent: Int? = getCurrentTime()
+                    val timeS = (timeCurrent?.div(1000))
+                    val min = (timeS?.div(60))
+                    val sec = (timeS?.rem(60))
+                    binding.textTimeCurrent.text = ("$min: $sec").toString()
+                    binding.seekBarMediaPlay.progress =
+                        (it as ActivityMusic).mService?.mediaPlayer!!.currentPosition
+
+                }
+                handler.postDelayed(this, 1000)
+            }
+        }, 0)
+    }
+    /**
+     * Bkav HuyNgQe:get current time
+     */
+    fun getCurrentTime(): Int? {
         return (activity as ActivityMusic).mService?.mediaPlayer?.currentPosition
     }
 /**

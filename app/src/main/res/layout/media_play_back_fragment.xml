@@ -250,6 +250,41 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_play_shuffle_orange" />
 
+        <ImageView
+            android:id="@+id/imageOffRepeat"
+            android:layout_width="@dimen/height_shuffle"
+            android:layout_height="@dimen/height_shuffle"
+            android:layout_marginStart="@dimen/height_shuffle"
+            android:layout_marginLeft="@dimen/height_shuffle"
+            android:layout_marginBottom="@dimen/height_shuffle"
+            app:layout_constraintBottom_toTopOf="@+id/music_control"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_repeat_dark" />
+
+        <ImageView
+            android:id="@+id/imageRepeatOn"
+            android:layout_width="@dimen/height_shuffle"
+            android:layout_height="@dimen/height_shuffle"
+            android:layout_marginStart="@dimen/height_shuffle"
+            android:layout_marginLeft="@dimen/height_shuffle"
+            android:layout_marginBottom="@dimen/height_shuffle"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/music_control"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_repeat_dark_selected" />
+
+        <ImageView
+            android:id="@+id/imageRepeatOne"
+            android:layout_width="@dimen/height_shuffle"
+            android:layout_height="@dimen/height_shuffle"
+            android:layout_marginStart="@dimen/height_shuffle"
+            android:layout_marginLeft="@dimen/height_shuffle"
+            android:layout_marginBottom="@dimen/height_shuffle"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/music_control"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_repeat_one_song_dark" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

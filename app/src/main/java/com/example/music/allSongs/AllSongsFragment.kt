@@ -61,7 +61,9 @@ class  AllSongsFragment: Fragment() {
         val adapter = SongAdapter(SongListener { song ->
             val mediaPlaybackService =  (activity as ActivityMusic).mService
             mediaPlaybackService?.sendNotification(song)
-            mediaPlaybackService?.playMusic(song)
+            if (mediaPlaybackService != null) {
+                mediaPlaybackService.listSong.value?.let { mediaPlaybackService.nextSongAuto(it.indexOf(song)) }
+            }
             binding.imageAlbum.setImageBitmap(song.getPicture())
             binding.textSongName.text = song.songName
             binding.textAuthor.text = song.artists

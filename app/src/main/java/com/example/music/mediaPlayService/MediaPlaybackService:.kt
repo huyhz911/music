@@ -23,7 +23,7 @@ import com.example.music.database.SongRepository
 /**
  * Created by Bkav HuyNgQe on 18/06/2022.
  */
-class MediaPlaybackService(): Service() {
+class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
 
     val intent = Intent(SONG_UPDATE_UI)
     var songRepository = SongRepository()
@@ -31,17 +31,83 @@ class MediaPlaybackService(): Service() {
     var index: Int = -1
     var mediaPlayer: MediaPlayer
     var checkShuffle :Boolean = false
-    var checkAutoNext: Boolean = false
+    var checkRepeatOff : Boolean = true
+    var checkRepeatOne : Boolean = false
 
     companion object{
         private const val SONG_UPDATE_UI ="send song"
         private const val DATA ="data"
-        private const val SONG_UPDATE_UI_SHUFFLE ="send song shuffle"
-        private const val DATASHUFFLE ="data shuffle"
+        private const val DATA_REPEAT ="send song repeat"
+        private const val DATA_SHUFFLE ="data shuffle"
     }
     init {
         listSong.value = songRepository.getSongs()
         mediaPlayer = MediaPlayer()
+    }
+
+    override fun onCompletion(mp: MediaPlayer?) {
+        if (checkShuffle) {
+            playRandom()
+        } else {
+            if (!checkRepeatOff) {
+                repeatOn()
+            } else {
+                if (checkRepeatOne) {
+                    repeatOne()
+                } else {
+                    if (checkRepeatOff) {
+                        if ((index + 1) == listSong.value?.size) {
+                            mediaPlayer.stop()
+                        } else {
+                            nextSongAuto(index + 1)
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
+/**
+ * Bkav HuyNgQe: lap lai 1 bai hat
+ */
+fun repeatOne() {
+//    checkRepeatOne = true
+//    val song: Song = listSong.value!!.get(index)
+//    intent.putExtra(DATA_REPEAT_ONE, (index).toString())
+//    sendBroadcast(intent)
+//    playMusic(song)
+    mediaPlayer.setOnCompletionListener {nextSongAuto(index) }
+}
+
+    /**
+     * Bkav HuyNgQe: cho nhac play het list lai quay lai tu dau lit
+     */
+    fun repeatOn() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.setOnCompletionListener {
+                checkRepeatOff = false
+                if ((index + 1) == listSong.value?.size) {
+                    intent.putExtra(DATA_REPEAT, (0).toString())
+                    sendBroadcast(intent)
+                    nextSongAuto(0)
+                } else {
+                    nextSongAuto(index + 1)
+                }
+            }
+        } else {
+            checkRepeatOff = false
+            if ((index + 1) == listSong.value?.size) {
+                intent.putExtra(DATA_REPEAT, (0).toString())
+                sendBroadcast(intent)
+                nextSongAuto(0)
+            } else {
+                nextSongAuto(index + 1)
+            }
+        }
+
+
     }
 
     /**
@@ -63,36 +129,29 @@ class MediaPlaybackService(): Service() {
         val sumIndexSong: Int = listSong.value!!.size - 1
         val indexRandom = (0..sumIndexSong).random()
         val song: Song = listSong.value!!.get(indexRandom)
-        intent.putExtra(DATASHUFFLE, (indexRandom).toString())
+        intent.putExtra(DATA_SHUFFLE, (indexRandom).toString())
         sendBroadcast(intent)
         playMusic(song)
-        mediaPlayer.setOnCompletionListener {
-            if (checkShuffle) {
-                playRandom()
-            } else {
-                nextSongAuto(indexRandom + 1)
-            }
-        }
+//        mediaPlayer.setOnCompletionListener {
+//            if (checkShuffle) {
+//                playRandom()
+//            } else {
+//                nextSongAuto(indexRandom + 1)
+//            }
+//        }
 
     }
 
  /**
   * Bkav HuyNgQe: auto next song
   */
-    fun nextSongAuto(index:Int){
-         playMusic(listSong.value!!.get(index))
-     mediaPlayer.setOnCompletionListener {
-         if ((index + 1) < listSong.value!!.size) {
-             // send song
-             intent.putExtra(DATA, (index + 1).toString())
-             sendBroadcast(intent)
-             nextSongAuto(index + 1)
-         } else {
-             mediaPlayer.stop()
-         }
-     }
-
-    }
+ fun nextSongAuto(index: Int) {
+     // send song
+     intent.putExtra(DATA, (index).toString())
+     sendBroadcast(intent)
+     playMusic(listSong.value!!.get(index))
+     mediaPlayer.setOnCompletionListener { onCompletion(mediaPlayer) }
+ }
     /**
      * Bkav HuyNgQe: next song do bam nut next
      */

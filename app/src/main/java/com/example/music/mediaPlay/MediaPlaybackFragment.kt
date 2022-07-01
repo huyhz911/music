@@ -34,8 +34,8 @@ class MediaPlaybackFragment: Fragment() {
     companion object{
         private const val SONG_UPDATE_UI ="send song"
         private const val DATA ="data"
-        private const val SONG_UPDATE_UI_SHUFFLE ="send song shuffle"
-        private const val DATASHUFFLE ="data shuffle"
+        private const val DATA_REPEAT ="send song repeat"
+        private const val DATA_SHUFFLE ="data shuffle"
     }
     var check: Boolean = false
     var checkShuffle: Boolean = false
@@ -53,12 +53,19 @@ class MediaPlaybackFragment: Fragment() {
                     updateTimeDuration(song)
                     updateTimeCurrent(song)
                 }
-                val indexShuffle: String? = intent?.getStringExtra(DATASHUFFLE)
+                val indexShuffle: String? = intent?.getStringExtra(DATA_SHUFFLE)
                 val songShuffle: Song? = indexShuffle?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
                 if (songShuffle != null) {
                     updateSong(songShuffle)
                     updateTimeDuration(songShuffle)
                     updateTimeCurrent(songShuffle)
+                }
+                val indexRepeat: String? = intent?.getStringExtra(DATA_REPEAT)
+                val songRepeat: Song? = indexRepeat?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
+                if (songRepeat != null) {
+                    updateSong(songRepeat)
+                    updateTimeDuration(songRepeat)
+                    updateTimeCurrent(songRepeat)
                 }
             }
         }
@@ -163,28 +170,60 @@ class MediaPlaybackFragment: Fragment() {
                 binding.imageShuffleOff.visibility = View.GONE
                 binding.imageShuffleOn.visibility = View.VISIBLE
                 (activity as ActivityMusic).mService?.playRandom()
-                val index: Int? =  (activity as ActivityMusic).mService?.index
-                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!!)
-                if (song != null) {
-                    updateSong(song)
-                    updateTimeCurrent(song)
-                    updateTimeDuration(song)
-                }
+//                val index: Int? =  (activity as ActivityMusic).mService?.index
+//                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!!)
+//                if (song != null) {
+//                    updateSong(song)
+//                    updateTimeCurrent(song)
+//                    updateTimeDuration(song)
+//                }
         }
         /*Bkav HuyNgQe: turn off shuffle */
         binding.imageShuffleOn.setOnClickListener {
             binding.imageShuffleOff.visibility = View.VISIBLE
             binding.imageShuffleOn.visibility = View.GONE
-            val index: Int? =  (activity as ActivityMusic).mService?.index
-            if (index != null) {
-                (activity as ActivityMusic).mService?.nextSongAuto(index+1)
+            (activity as ActivityMusic).mService?.checkShuffle = false
+            (activity as ActivityMusic).mService?.mediaPlayer?.setOnCompletionListener {
+                val index: Int? = (activity as ActivityMusic).mService?.index
+                if (index != null) {
+                    (activity as ActivityMusic).mService?.nextSongAuto(index + 1)
+                }
             }
-            val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!! +1)
-            if (song != null) {
-                updateSong(song)
-                updateTimeCurrent(song)
-                updateTimeDuration(song)
-            }
+
+//
+//            (activity as ActivityMusic).mService?.mediaPlayer?.setOnCompletionListener {
+//                val index: Int? = (activity as ActivityMusic).mService?.index
+//                val song: Song? =
+//                    (activity as ActivityMusic).mService?.listSong?.value?.get(index!! + 1)
+//                if (song != null) {
+//                    updateSong(song)
+//                    updateTimeCurrent(song)
+//                    updateTimeDuration(song)
+//                }
+//            }
+
+        }
+        /*Bkav HuyNgQe: turn on repeat */
+        binding.imageOffRepeat.setOnClickListener {
+            (activity as ActivityMusic).mService?.checkRepeatOff = false
+            binding.imageOffRepeat.visibility = View.GONE
+            binding.imageRepeatOn.visibility = View.VISIBLE
+            (activity as ActivityMusic).mService?.repeatOn()
+        }
+        /*Bkav HuyNgQe: turn on repeat one */
+        binding.imageRepeatOn.setOnClickListener {
+            binding.imageRepeatOn.visibility = View.GONE
+            binding.imageRepeatOne.visibility = View.VISIBLE
+            (activity as ActivityMusic).mService?.repeatOne()
+        }
+        /*Bkav HuyNgQe: turn off repeat one */
+        binding.imageRepeatOne.setOnClickListener {
+            (activity as ActivityMusic).mService?.checkRepeatOff = true
+            binding.imageRepeatOne.visibility = View.GONE
+            binding.imageOffRepeat.visibility = View.VISIBLE
+            (activity as ActivityMusic).mService?.checkRepeatOne = false
+            val index = (activity as ActivityMusic).mService?.index?.plus(1)
+            (activity as ActivityMusic).mService?.nextSongAuto(index!!)
 
         }
         return binding.root

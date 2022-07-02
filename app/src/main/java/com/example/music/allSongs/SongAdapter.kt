@@ -15,7 +15,9 @@ import com.example.music.databinding.ListItemSongBinding
  */
 class SongAdapter(val clickListener: SongListener): ListAdapter<Song,SongAdapter.SongViewHolder>(SongInfoDiffCallback()) {
 
-
+/**
+ * Bkav HuyNgQe: gán dữ liệu cho item trong recyclerView
+ */
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
        val item = getItem(position)
         holder.songName.text = item.songName
@@ -30,13 +32,18 @@ class SongAdapter(val clickListener: SongListener): ListAdapter<Song,SongAdapter
         holder.bind(clickListener)
         holder.binding.song = item
     }
-
+  /**
+   * Bkav HuyNgQe: tạo ViewHolder
+   */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ListItemSongBinding.inflate(layoutInflater,parent,false)
         return SongViewHolder(binding)
 
     }
+    /**
+     * Bkav HuyNgQe: khai báo ui trong item của recyclerView
+     */
     class SongViewHolder(val binding: ListItemSongBinding): RecyclerView.ViewHolder(binding.root){
         val songPosition : TextView = binding.position
         val songName: TextView = binding.songName
@@ -44,20 +51,26 @@ class SongAdapter(val clickListener: SongListener): ListAdapter<Song,SongAdapter
         fun bind(clickListener: SongListener){
             binding.clickListener = clickListener
         }
-
     }
 }
+/**
+ * Bkav HuyNgQe:kiểm tra item trùng trong recyclerView
+ */
 class SongInfoDiffCallback: DiffUtil.ItemCallback<Song>(){
+    /*Bkav HuyNgQe: kiểm tra các item có id giống nhau */
     override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
         return  oldItem.songID == newItem.songID
     }
 
-
+ /*Bkav HuyNgQe: kiểm tra item giống nhau */
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
         return oldItem == newItem
     }
 }
+/**
+ * Bkav HuyNgQe:bắt sự kiện khi click vào item
+ */
 class SongListener(val clickListener: (songId: Song) -> Unit){
     fun onClick(song: Song)= clickListener(song)
 }

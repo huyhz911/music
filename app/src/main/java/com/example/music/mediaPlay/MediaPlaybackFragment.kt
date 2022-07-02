@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +21,6 @@ import com.example.music.allSongs.SongAdapter
 import com.example.music.allSongs.SongListener
 import com.example.music.database.Song
 import com.example.music.databinding.MediaPlayBackFragmentBinding
-import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.random.Random
-
 /**
  * Created by Bkav HuyNgQe on 07/06/2022.
  */
@@ -38,7 +34,6 @@ class MediaPlaybackFragment: Fragment() {
         private const val DATA_SHUFFLE ="data shuffle"
     }
     var check: Boolean = false
-    var checkShuffle: Boolean = false
     /**
      * Bkav HuyNgQe: nhan data tu service de auto next song
      */
@@ -46,6 +41,7 @@ class MediaPlaybackFragment: Fragment() {
         override fun onReceive(context: Context?, intent: Intent?) {
             check = SONG_UPDATE_UI == intent?.action
             if (check){
+                /*Bkav HuyNgQe: nhan data bai hat khi auto next vaf update ui */
                 val index: String? = intent?.getStringExtra(DATA)
                 val song: Song? = index?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
                 if (song != null) {
@@ -53,6 +49,7 @@ class MediaPlaybackFragment: Fragment() {
                     updateTimeDuration(song)
                     updateTimeCurrent(song)
                 }
+                /*Bkav HuyNgQe:  nhan data bai hat khi next shuffle  vaf update ui */
                 val indexShuffle: String? = intent?.getStringExtra(DATA_SHUFFLE)
                 val songShuffle: Song? = indexShuffle?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
                 if (songShuffle != null) {
@@ -60,6 +57,7 @@ class MediaPlaybackFragment: Fragment() {
                     updateTimeDuration(songShuffle)
                     updateTimeCurrent(songShuffle)
                 }
+                /*Bkav HuyNgQe: nhan data bai hat khi next repeat  vaf update ui  */
                 val indexRepeat: String? = intent?.getStringExtra(DATA_REPEAT)
                 val songRepeat: Song? = indexRepeat?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
                 if (songRepeat != null) {
@@ -81,7 +79,7 @@ class MediaPlaybackFragment: Fragment() {
         binding.lifecycleOwner = this
         val adapter = SongAdapter(SongListener { })
         binding.listSong?.adapter = adapter
-
+        /*Bkav HuyNgQe: submit item len recyclerView */
         (activity as ActivityMusic).listSong.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
@@ -144,7 +142,7 @@ class MediaPlaybackFragment: Fragment() {
                     updateTimeDuration(song)
                 }
             }else{
-                if (getCurrentTime()!! < 3000 ){
+                if ((activity as ActivityMusic).mService?.getCurrentTime()!! < 3000 ){
                     val songBack: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!! - 1)
                     if (index != null) {
                         (activity as ActivityMusic).mService?.nextSongAuto(index - 1)
@@ -170,13 +168,6 @@ class MediaPlaybackFragment: Fragment() {
                 binding.imageShuffleOff.visibility = View.GONE
                 binding.imageShuffleOn.visibility = View.VISIBLE
                 (activity as ActivityMusic).mService?.playRandom()
-//                val index: Int? =  (activity as ActivityMusic).mService?.index
-//                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!!)
-//                if (song != null) {
-//                    updateSong(song)
-//                    updateTimeCurrent(song)
-//                    updateTimeDuration(song)
-//                }
         }
         /*Bkav HuyNgQe: turn off shuffle */
         binding.imageShuffleOn.setOnClickListener {
@@ -189,19 +180,6 @@ class MediaPlaybackFragment: Fragment() {
                     (activity as ActivityMusic).mService?.nextSongAuto(index + 1)
                 }
             }
-
-//
-//            (activity as ActivityMusic).mService?.mediaPlayer?.setOnCompletionListener {
-//                val index: Int? = (activity as ActivityMusic).mService?.index
-//                val song: Song? =
-//                    (activity as ActivityMusic).mService?.listSong?.value?.get(index!! + 1)
-//                if (song != null) {
-//                    updateSong(song)
-//                    updateTimeCurrent(song)
-//                    updateTimeDuration(song)
-//                }
-//            }
-
         }
         /*Bkav HuyNgQe: turn on repeat */
         binding.imageOffRepeat.setOnClickListener {
@@ -224,7 +202,6 @@ class MediaPlaybackFragment: Fragment() {
             (activity as ActivityMusic).mService?.checkRepeatOne = false
             val index = (activity as ActivityMusic).mService?.index?.plus(1)
             (activity as ActivityMusic).mService?.nextSongAuto(index!!)
-
         }
         return binding.root
     }
@@ -253,12 +230,7 @@ class MediaPlaybackFragment: Fragment() {
      * Bkav HuyNgQe:update time duration
      */
     fun updateTimeDuration(song:Song){
-        song.duration.let {
-            val timeS = (it?.div(1000))?.toInt()
-            val min = (timeS?.div(60))
-            val sec = (timeS?.rem(60))
-            binding.textTimeDuration.text = ("$min: $sec").toString()
-        }
+            binding.textTimeDuration.text = (activity as ActivityMusic).mService?.timeDuration(song)
     }
     /**
      * Bkav HuyNgQe: update timeCurrent
@@ -281,25 +253,15 @@ class MediaPlaybackFragment: Fragment() {
         handler.postDelayed(object : Runnable {
             override fun run() {
                 activity?.let {
-                    val timeCurrent: Int? = getCurrentTime()
-                    val timeS = (timeCurrent?.div(1000))
-                    val min = (timeS?.div(60))
-                    val sec = (timeS?.rem(60))
-                    binding.textTimeCurrent.text = ("$min: $sec").toString()
+                    binding.textTimeCurrent.text =(activity as ActivityMusic ).mService?.formatCurrentTime()
                     binding.seekBarMediaPlay.progress =
                         (it as ActivityMusic).mService?.mediaPlayer!!.currentPosition
-
                 }
                 handler.postDelayed(this, 1000)
             }
         }, 0)
     }
-    /**
-     * Bkav HuyNgQe:get current time
-     */
-    fun getCurrentTime(): Int? {
-        return (activity as ActivityMusic).mService?.mediaPlayer?.currentPosition
-    }
+
 /**
  * Bkav HuyNgQe:khi onstop thi bo dang ki broadcast
  */

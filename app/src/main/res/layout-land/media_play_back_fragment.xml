@@ -16,7 +16,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout2"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/height_appBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -36,7 +36,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_song"
-            android:layout_width="350dp"
+            android:layout_width="@dimen/width_recyclerView"
             android:layout_height="0dp"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -46,8 +46,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mediaPlayBackLandScape"
-            android:layout_width="380dp"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/width_media_play_back_landScape"
+            android:layout_height="@dimen/height_width_media_play_back_landScape"
             android:background="@drawable/bg_default_album_art"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,8 +55,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#85FFFFFF"
+                android:layout_height="@dimen/height_popup"
+                android:background="@color/back_ground_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,13 +68,13 @@
 
                     <ImageView
                         android:id="@+id/optionsMedia"
-                        android:layout_width="33dp"
-                        android:layout_height="68dp"
+                        android:layout_width="@dimen/width_option"
+                        android:layout_height="@dimen/height_option"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="@dimen/marginEnd_optiom"
+                        android:layout_marginRight="@dimen/marginRight_option"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -82,12 +82,12 @@
 
                     <ImageView
                         android:id="@+id/imageAlbumMediaPlay"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="@dimen/width_picture"
+                        android:layout_height="@dimen/height_picture"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="@dimen/marginStart_picture"
+                        android:layout_marginLeft="@dimen/marginLeft_picture"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -96,17 +96,17 @@
                     <TextView
                         android:id="@+id/textSongNameMediaPlay"
                         style="@style/textStyle"
-                        android:layout_width="198dp"
+                        android:layout_width="@dimen/width_song_name"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="@dimen/marginStart_songName"
+                        android:layout_marginLeft="@dimen/marginLeft_songName"
+                        android:layout_marginTop="@dimen/marginTop_songName"
                         android:layout_toStartOf="@+id/imageView7"
                         android:layout_toLeftOf="@+id/imageView7"
                         android:layout_toEndOf="@+id/imageAlbumMediaPlay"
                         android:layout_toRightOf="@+id/imageAlbumMediaPlay"
-                        android:text="TextView"
+                        tools:text="TextView"
                         app:layout_constraintBottom_toTopOf="@+id/textAuthorMediaPlay"
                         app:layout_constraintEnd_toStartOf="@+id/imageView7"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -137,8 +137,8 @@
             <RelativeLayout
                 android:id="@+id/relativeLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="#85FFFFFF"
+                android:layout_height="@dimen/height_relative_landscape"
+                android:background="@color/back_ground_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -149,10 +149,10 @@
 
                     <ToggleButton
                         android:id="@+id/toggleLike"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="75dp"
-                        android:layout_marginLeft="75dp"
+                        android:layout_width="@dimen/width_like"
+                        android:layout_height="@dimen/height_like"
+                        android:layout_marginStart="@dimen/marginStart_like"
+                        android:layout_marginLeft="@dimen/marginLeft_like"
                         android:background="@drawable/like"
                         android:textOff=""
                         android:textOn=""
@@ -163,10 +163,10 @@
 
                     <ImageView
                         android:id="@+id/backButton"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginLeft="25dp"
+                        android:layout_width="@dimen/width_back"
+                        android:layout_height="@dimen/width_back"
+                        android:layout_marginStart="@dimen/marginStart_back"
+                        android:layout_marginLeft="@dimen/marginStart_back"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/toggleLike"
                         app:layout_constraintTop_toTopOf="parent"
@@ -175,8 +175,8 @@
 
                     <ImageView
                         android:id="@+id/imageView4"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="@dimen/width_backGround"
+                        android:layout_height="@dimen/width_backGround"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/nextButton"
                         app:layout_constraintHorizontal_bias="0.487"
@@ -187,10 +187,10 @@
 
                     <ImageView
                         android:id="@+id/nextButton"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="25dp"
-                        android:layout_marginRight="25dp"
+                        android:layout_width="@dimen/width_next"
+                        android:layout_height="@dimen/width_next"
+                        android:layout_marginEnd="@dimen/marginEnd_next"
+                        android:layout_marginRight="@dimen/marginEnd_next"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/toggleDislike"
                         app:layout_constraintTop_toTopOf="parent"
@@ -198,10 +198,10 @@
 
                     <ToggleButton
                         android:id="@+id/toggleDislike"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="75dp"
-                        android:layout_marginRight="75dp"
+                        android:layout_width="@dimen/width_Dislike"
+                        android:layout_height="@dimen/width_Dislike"
+                        android:layout_marginEnd="@dimen/marginEnd_Dislike"
+                        android:layout_marginRight="@dimen/marginRight_Dislike"
                         android:background="@drawable/dis_like"
                         android:textOff=""
                         android:textOn=""
@@ -213,8 +213,8 @@
 
                     <ToggleButton
                         android:id="@+id/togglePlayPause"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="@dimen/width_pause"
+                        android:layout_height="@dimen/width_pause"
                         android:background="@drawable/play_pause_white"
                         android:textOff=""
                         android:textOn=""
@@ -228,10 +228,10 @@
                         style="@style/textTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="22dp"
-                        android:layout_marginRight="22dp"
-                        android:layout_marginBottom="35dp"
-                        android:text="00:00"
+                        android:layout_marginEnd="@dimen/marginEnd_duration"
+                        android:layout_marginRight="@dimen/marginRight_duration"
+                        android:layout_marginBottom="@dimen/marginBottom_duration"
+                        tools:text="00:00"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -240,9 +240,9 @@
                         style="@style/textTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="22dp"
-                        android:layout_marginLeft="22dp"
-                        android:text="00:00"
+                        android:layout_marginStart="@dimen/marginStart_current"
+                        android:layout_marginLeft="@dimen/marginStart_current"
+                        tools:text="00:00"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textTimeDuration"
                         app:layout_constraintStart_toStartOf="parent" />
 
@@ -254,12 +254,12 @@
                 android:id="@+id/seekBarMediaPlay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:padding="0dp"
-                android:paddingLeft="0dp"
-                android:paddingTop="0dp"
-                android:paddingRight="0dp"
-                android:paddingBottom="0dp"
+                android:layout_marginBottom="@dimen/marginBottom_seekBar"
+                android:padding="@dimen/padding_seekbar"
+                android:paddingLeft="@dimen/padding_seekbar"
+                android:paddingTop="@dimen/padding_seekbar"
+                android:paddingRight="@dimen/padding_seekbar"
+                android:paddingBottom="@dimen/padding_seekbar"
                 android:progressTint="@color/backgroundColor"
                 android:thumbTint="@color/backgroundColor"
                 app:layout_constraintBottom_toBottomOf="parent"

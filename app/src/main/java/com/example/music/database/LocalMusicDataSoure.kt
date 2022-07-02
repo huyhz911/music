@@ -27,8 +27,6 @@ class LocalMusicDataSource {
             MediaStore.Audio.Media._ID
         )
         val sortOrder = MediaStore.Audio.AudioColumns.TITLE
-
-
         val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
         val cursor: Cursor? = MyApplication.instance?.contentResolver?.query(uri,

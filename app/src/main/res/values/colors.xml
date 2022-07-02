@@ -11,4 +11,5 @@
     <color name="backgroundColor">#FF5722</color>
     <color name="textTitleColor">#F8F5F5</color>
     <color name="statusbar">#BD4200</color>
+    <color name="back_ground_color">#85FFFFFF</color>
 </resources>

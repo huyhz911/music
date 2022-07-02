@@ -82,6 +82,7 @@ class  AllSongsFragment: Fragment() {
         binding.relativeLayout.setOnClickListener { view: View ->
             view.findNavController().navigate(AllSongsFragmentDirections.actionAllSongsFragmentToMediaPlaybackFragment2(songPra))
         }
+        /*Bkav HuyNgQe: sự kiện nút play */
         binding.togglePlayPause.setOnClickListener { if (binding.togglePlayPause.isChecked){
             (activity as ActivityMusic).mService?.resumeMusic()
 
@@ -90,6 +91,7 @@ class  AllSongsFragment: Fragment() {
 
          }
         }
+        /*Bkav HuyNgQe: đăng kí broadcast  */
         val intentFilter= IntentFilter(SONG_UPDATE_UI)
         requireActivity().registerReceiver(mBroadcast,intentFilter);
 
@@ -105,7 +107,9 @@ class  AllSongsFragment: Fragment() {
             binding.textAuthor.text = songNext.artists
 
     }
-
+/**
+ * Bkav HuyNgQe: gỡ đăng kí broadcast khi app stop
+ */
     override fun onStop() {
         super.onStop()
         requireActivity().unregisterReceiver(mBroadcast)

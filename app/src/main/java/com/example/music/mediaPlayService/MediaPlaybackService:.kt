@@ -33,6 +33,8 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
     var checkShuffle :Boolean = false
     var checkRepeatOff : Boolean = true
     var checkRepeatOne : Boolean = false
+    lateinit var totalDuration: String
+    lateinit var currentTime: String
 
     companion object{
         private const val SONG_UPDATE_UI ="send song"
@@ -44,7 +46,9 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
         listSong.value = songRepository.getSongs()
         mediaPlayer = MediaPlayer()
     }
-
+/**
+ * Bkav HuyNgQe:kiem tra chế độ nghe nhạc
+ */
     override fun onCompletion(mp: MediaPlayer?) {
         if (checkShuffle) {
             playRandom()
@@ -62,18 +66,21 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
                             nextSongAuto(index + 1)
                         }
                     }
-
                 }
-
             }
         }
     }
-
+    /**
+     * Bkav HuyNgQe:get current time
+     */
+    fun getCurrentTime(): Int {
+        return mediaPlayer.currentPosition
+    }
 /**
  * Bkav HuyNgQe: lap lai 1 bai hat
  */
 fun repeatOne() {
-//    checkRepeatOne = true
+     checkRepeatOne = true
 //    val song: Song = listSong.value!!.get(index)
 //    intent.putExtra(DATA_REPEAT_ONE, (index).toString())
 //    sendBroadcast(intent)
@@ -106,14 +113,13 @@ fun repeatOne() {
                 nextSongAuto(index + 1)
             }
         }
-
-
     }
 
     /**
      * Bkav HuyNgQe: play music
      */
     fun playMusic(song: Song) {
+        sendNotification(song)
         mediaPlayer.reset()
         val uri = Uri.parse(song.data)
         mediaPlayer.setDataSource(MyApplication.getContext(), uri)
@@ -132,14 +138,6 @@ fun repeatOne() {
         intent.putExtra(DATA_SHUFFLE, (indexRandom).toString())
         sendBroadcast(intent)
         playMusic(song)
-//        mediaPlayer.setOnCompletionListener {
-//            if (checkShuffle) {
-//                playRandom()
-//            } else {
-//                nextSongAuto(indexRandom + 1)
-//            }
-//        }
-
     }
 
  /**
@@ -186,8 +184,6 @@ fun repeatOne() {
     override fun onCreate() {
         super.onCreate()
     }
-
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_NOT_STICKY
     }
@@ -214,6 +210,9 @@ fun repeatOne() {
             .build()
         startForeground(1, notification)
     }
+/**
+ * Bkav HuyNgQe:gowx bound service
+ */
 
     override fun onUnbind(intent: Intent?): Boolean {
         return super.onUnbind(intent)
@@ -225,7 +224,6 @@ fun repeatOne() {
 
     // Binder given to clients
     private val binder = LocalBinder()
-
     /**
      * Class used for the client Binder.  Because we know this service always
      * runs in the same process as its clients, we don't need to deal with IPC.
@@ -238,4 +236,29 @@ fun repeatOne() {
     override fun onBind(intent: Intent): IBinder {
         return binder
     }
+ /*****************************logicTime*********************/
+    /**
+     * Bkav HuyNgQe: time duration
+     */
+    fun timeDuration(song:Song): String{
+        song.duration.let {
+            val timeS = (it?.div(1000))?.toInt()
+            val min = (timeS?.div(60))
+            val sec = (timeS?.rem(60))
+            totalDuration = resources.getString(R.string.total_duration, min, sec)
+        }
+        return  totalDuration
+    }
+    /**
+     * Bkav HuyNgQe: format current time
+     */
+    fun formatCurrentTime():String{
+        val timeCurrent: Int? = getCurrentTime()
+        val timeS = (timeCurrent?.div(1000))
+        val min = (timeS?.div(60))
+        val sec = (timeS?.rem(60))
+        currentTime = resources.getString(R.string.total_duration,min, sec)
+        return currentTime
+    }
+
 }

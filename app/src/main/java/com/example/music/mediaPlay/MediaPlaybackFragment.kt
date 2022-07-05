@@ -14,17 +14,24 @@ import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.music.ActivityMusic
+import com.example.music.MyApplication
 import com.example.music.R
 import com.example.music.allSongs.SongAdapter
 import com.example.music.allSongs.SongListener
+import com.example.music.database.FavoriteSongs
+import com.example.music.database.FavoriteSongsDatabase
 import com.example.music.database.Song
 import com.example.music.databinding.MediaPlayBackFragmentBinding
+import com.example.music.mediaPlayService.MediaPlaybackService
+
 /**
  * Created by Bkav HuyNgQe on 07/06/2022.
  */
 class MediaPlaybackFragment: Fragment() {
+    private lateinit var favoriteSongsViewModel: MediaPlaybackViewModel
     private lateinit var binding: MediaPlayBackFragmentBinding
     val handler = Handler()
     companion object{
@@ -106,9 +113,9 @@ class MediaPlaybackFragment: Fragment() {
          updateTimeCurrent(getArgs())
         /*Bkav HuyNgQe:chuyen bai hat khi bam nut next */
         binding.nextButton.setOnClickListener {
-            val index: Int? = (activity as ActivityMusic).mService?.index
+            val index: Int = MediaPlaybackService.index
             val listSize: Int? = ((activity as ActivityMusic).mService?.listSong?.value?.size)
-            if (  (index!! + 1) == listSize){
+            if (  (index + 1) == listSize){
                 val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(0)
                 if (song != null) {
                     (activity as ActivityMusic).mService?.nextSongAuto(0)
@@ -131,7 +138,7 @@ class MediaPlaybackFragment: Fragment() {
         * neu thoi gian hien tai >3 play lai bai nhac do
         *  */
         binding.backButton.setOnClickListener {
-            val index: Int? = (activity as ActivityMusic).mService?.index
+            val index: Int = MediaPlaybackService.index
             val listSize: Int? = ((activity as ActivityMusic).mService?.listSong?.value?.size)
             if(index == 0){
                 val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(listSize!! -1)
@@ -144,18 +151,14 @@ class MediaPlaybackFragment: Fragment() {
             }else{
                 if ((activity as ActivityMusic).mService?.getCurrentTime()!! < 3000 ){
                     val songBack: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!! - 1)
-                    if (index != null) {
                         (activity as ActivityMusic).mService?.nextSongAuto(index - 1)
-                    }
                     if (songBack != null) {
                         updateSong(songBack)
                         updateTimeCurrent(songBack)
                         updateTimeDuration(songBack)
                     }
                 }else{
-                    if (index != null) {
                         (activity as ActivityMusic).mService?.nextSongAuto(index)
-                    }
                 }
             }
 
@@ -175,10 +178,8 @@ class MediaPlaybackFragment: Fragment() {
             binding.imageShuffleOn.visibility = View.GONE
             (activity as ActivityMusic).mService?.checkShuffle = false
             (activity as ActivityMusic).mService?.mediaPlayer?.setOnCompletionListener {
-                val index: Int? = (activity as ActivityMusic).mService?.index
-                if (index != null) {
+                val index: Int = MediaPlaybackService.index
                     (activity as ActivityMusic).mService?.nextSongAuto(index + 1)
-                }
             }
         }
         /*Bkav HuyNgQe: turn on repeat */
@@ -200,9 +201,27 @@ class MediaPlaybackFragment: Fragment() {
             binding.imageRepeatOne.visibility = View.GONE
             binding.imageOffRepeat.visibility = View.VISIBLE
             (activity as ActivityMusic).mService?.checkRepeatOne = false
-            val index = (activity as ActivityMusic).mService?.index?.plus(1)
-            (activity as ActivityMusic).mService?.nextSongAuto(index!!)
+            val index =MediaPlaybackService.index + 1
+            (activity as ActivityMusic).mService?.nextSongAuto(index)
         }
+
+       /*HuyNgQe: xu ly su kien nut like*/
+        val dataSource = FavoriteSongsDatabase.getInstance(MyApplication.getContext()).favoriteSongsDatabaseDAO
+        val viewModelFactory = MediaPlaybackViewModelFactory(dataSource)
+        favoriteSongsViewModel = ViewModelProvider(this, viewModelFactory).get(MediaPlaybackViewModel::class.java)
+        binding.mediaPlayViewModel = favoriteSongsViewModel
+        binding.toggleLike.setOnClickListener {
+            if (binding.toggleLike.isChecked){
+                favoriteSongsViewModel.onClickLike()
+            }
+        }
+       /*HuyNgQe: xu ly su kien nut disLike*/
+       binding.toggleDislike.setOnClickListener {
+           favoriteSongsViewModel.onClickDislike()
+       }
+
+
+
         return binding.root
     }
     /**

@@ -23,6 +23,7 @@ abstract class FavoriteSongsDatabase: RoomDatabase() {
                                     FavoriteSongsDatabase::class.java,
                                     "favorite_songs_database")
                                     .fallbackToDestructiveMigration()
+                                    .allowMainThreadQueries()
                                     .build()
                               INSTANCE = instance
                         }

@@ -5,8 +5,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="mediaPlayFragment"
-            type="com.example.music.mediaPlay.MediaPlaybackFragment" />
+            name="mediaPlayViewModel"
+            type="com.example.music.mediaPlay.MediaPlaybackViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

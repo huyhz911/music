@@ -2,6 +2,7 @@ package com.example.music.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -14,6 +15,8 @@ interface FavoriteSongsDatabaseDAO {
     @Insert
     suspend fun insert(song: FavoriteSongs)
     // lay ra tat ca bai hat ua thich
-    @Query("SELECT * FROM favorite_songs_provider ORDER BY ID DESC")
-    fun getAllSongs(): LiveData<List<FavoriteSongs>>
+    @Query("SELECT * FROM favorite_songs_provider")
+    fun getAllSongs(): List<FavoriteSongs>
+    @Query("DELETE FROM favorite_songs_provider WHERE song_ID = :key ")
+    fun removeFavoriteSong(key:Int)
 }

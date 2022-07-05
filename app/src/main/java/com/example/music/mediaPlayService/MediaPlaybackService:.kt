@@ -28,15 +28,17 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
     val intent = Intent(SONG_UPDATE_UI)
     var songRepository = SongRepository()
     var listSong = MutableLiveData<ArrayList<Song>>()
-    var index: Int = -1
     var mediaPlayer: MediaPlayer
     var checkShuffle :Boolean = false
     var checkRepeatOff : Boolean = true
     var checkRepeatOne : Boolean = false
+    var checkLike : Boolean = false
     lateinit var totalDuration: String
     lateinit var currentTime: String
 
     companion object{
+        // de tuong tc giua 2 viewModel
+        var index: Int = -1
         private const val SONG_UPDATE_UI ="send song"
         private const val DATA ="data"
         private const val DATA_REPEAT ="send song repeat"
@@ -127,6 +129,7 @@ fun repeatOne() {
         mediaPlayer.start()
         index = listSong.value!!.indexOf(song)
     }
+
     /**
      * Bkav HuyNgQe: play random
      */

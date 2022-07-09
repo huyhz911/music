@@ -1,4 +1,4 @@
-package com.example.music.mediaPlayService
+package com.example.music.service
 
 import android.app.Notification
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
@@ -39,9 +39,9 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
     companion object{
         // de tuong tc giua 2 viewModel
         var index: Int = -1
-        private const val SONG_UPDATE_UI ="send song"
+        private const val SONG_UPDATE_UI ="song update ui"
         private const val DATA ="data"
-        private const val DATA_REPEAT ="send song repeat"
+        private const val DATA_REPEAT ="data repeat"
         private const val DATA_SHUFFLE ="data shuffle"
     }
     init {
@@ -83,10 +83,6 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
  */
 fun repeatOne() {
      checkRepeatOne = true
-//    val song: Song = listSong.value!!.get(index)
-//    intent.putExtra(DATA_REPEAT_ONE, (index).toString())
-//    sendBroadcast(intent)
-//    playMusic(song)
     mediaPlayer.setOnCompletionListener {nextSongAuto(index) }
 }
 
@@ -173,7 +169,7 @@ fun repeatOne() {
     /**
      * Bkav HuyNgQe: resumeMusic
      */
-    fun resumeMusic(){
+    fun startMusic(){
         if (!mediaPlayer.isPlaying){
             mediaPlayer.start()
         }
@@ -263,5 +259,4 @@ fun repeatOne() {
         currentTime = resources.getString(R.string.total_duration,min, sec)
         return currentTime
     }
-
 }

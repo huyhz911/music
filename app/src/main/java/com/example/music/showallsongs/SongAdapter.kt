@@ -1,4 +1,4 @@
-package com.example.music.allSongs
+package com.example.music.showallsongs
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

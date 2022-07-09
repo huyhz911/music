@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.music.database.Song
 import com.example.music.databinding.ActivityMainBinding
-import com.example.music.mediaPlayService.MediaPlaybackService
+import com.example.music.service.MediaPlaybackService
 
 
 /**

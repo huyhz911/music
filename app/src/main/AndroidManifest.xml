@@ -20,7 +20,7 @@
         android:name=".MyApplication"
         tools:targetApi="31">
         <service
-            android:name=".mediaPlayService.MediaPlaybackService"
+            android:name=".service.MediaPlaybackService"
             android:enabled="true"
             android:exported="false" />
         <activity

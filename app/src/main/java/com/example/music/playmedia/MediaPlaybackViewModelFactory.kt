@@ -1,4 +1,4 @@
-package com.example.music.mediaPlay
+package com.example.music.playmedia
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

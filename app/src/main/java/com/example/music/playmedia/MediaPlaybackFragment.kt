@@ -1,4 +1,4 @@
-package com.example.music.mediaPlay
+package com.example.music.playmedia
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -19,13 +19,12 @@ import androidx.navigation.findNavController
 import com.example.music.ActivityMusic
 import com.example.music.MyApplication
 import com.example.music.R
-import com.example.music.allSongs.SongAdapter
-import com.example.music.allSongs.SongListener
-import com.example.music.database.FavoriteSongs
+import com.example.music.showallsongs.SongAdapter
+import com.example.music.showallsongs.SongListener
 import com.example.music.database.FavoriteSongsDatabase
 import com.example.music.database.Song
 import com.example.music.databinding.MediaPlayBackFragmentBinding
-import com.example.music.mediaPlayService.MediaPlaybackService
+import com.example.music.service.MediaPlaybackService
 
 /**
  * Created by Bkav HuyNgQe on 07/06/2022.
@@ -35,40 +34,42 @@ class MediaPlaybackFragment: Fragment() {
     private lateinit var binding: MediaPlayBackFragmentBinding
     val handler = Handler()
     companion object{
-        private const val SONG_UPDATE_UI ="send song"
+        private const val SONG_UPDATE_UI ="song update ui"
         private const val DATA ="data"
-        private const val DATA_REPEAT ="send song repeat"
+        private const val DATA_REPEAT ="data repeat"
         private const val DATA_SHUFFLE ="data shuffle"
     }
-    var check: Boolean = false
+
     /**
      * Bkav HuyNgQe: nhan data tu service de auto next song
      */
-    private var mBroadcast = object : BroadcastReceiver(){
+    private var mBroadcast = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            check = SONG_UPDATE_UI == intent?.action
-            if (check){
+            if (SONG_UPDATE_UI == intent?.action) {
                 /*Bkav HuyNgQe: nhan data bai hat khi auto next vaf update ui */
-                val index: String? = intent?.getStringExtra(DATA)
-                val song: Song? = index?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
+                val index: String? = intent.getStringExtra(DATA)
+                val song: Song? =
+                    index?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt()) }
                 if (song != null) {
-                    updateSong(song)
+                    updateUISong(song)
                     updateTimeDuration(song)
                     updateTimeCurrent(song)
                 }
                 /*Bkav HuyNgQe:  nhan data bai hat khi next shuffle  vaf update ui */
-                val indexShuffle: String? = intent?.getStringExtra(DATA_SHUFFLE)
-                val songShuffle: Song? = indexShuffle?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
+                val indexShuffle: String? = intent.getStringExtra(DATA_SHUFFLE)
+                val songShuffle: Song? =
+                    indexShuffle?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt()) }
                 if (songShuffle != null) {
-                    updateSong(songShuffle)
+                    updateUISong(songShuffle)
                     updateTimeDuration(songShuffle)
                     updateTimeCurrent(songShuffle)
                 }
                 /*Bkav HuyNgQe: nhan data bai hat khi next repeat  vaf update ui  */
-                val indexRepeat: String? = intent?.getStringExtra(DATA_REPEAT)
-                val songRepeat: Song? = indexRepeat?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt())}
+                val indexRepeat: String? = intent.getStringExtra(DATA_REPEAT)
+                val songRepeat: Song? =
+                    indexRepeat?.let { (activity as ActivityMusic).listSong.value?.get(it.toInt()) }
                 if (songRepeat != null) {
-                    updateSong(songRepeat)
+                    updateUISong(songRepeat)
                     updateTimeDuration(songRepeat)
                     updateTimeCurrent(songRepeat)
                 }
@@ -84,6 +85,13 @@ class MediaPlaybackFragment: Fragment() {
             R.layout.media_play_back_fragment,container,false)
         binding.imageBackListSong?.setOnClickListener { view: View -> view.findNavController().navigate(MediaPlaybackFragmentDirections.actionMediaPlaybackFragmentToAllSongsFragment())}
         binding.lifecycleOwner = this
+        val dataSource =
+            FavoriteSongsDatabase.getInstance(MyApplication.getContext()).favoriteSongsDatabaseDAO
+        val viewModelFactory = MediaPlaybackViewModelFactory(dataSource)
+        favoriteSongsViewModel =
+            ViewModelProvider(this, viewModelFactory).get(MediaPlaybackViewModel::class.java)
+        binding.mediaPlayViewModel = favoriteSongsViewModel
+        binding.resources = resources
         val adapter = SongAdapter(SongListener { })
         binding.listSong?.adapter = adapter
         /*Bkav HuyNgQe: submit item len recyclerView */
@@ -96,43 +104,41 @@ class MediaPlaybackFragment: Fragment() {
             binding.togglePlayPause.isChecked = true
         }
         /*Bkav HuyNgQe:update song */
-        updateSong(getArgs())
+        updateUISong(getArgs())
         /*Bkav HuyNgQe:  cập nhật trạng thái nút play */
-        binding.togglePlayPause.setOnClickListener {   if (binding.togglePlayPause.isChecked){
-            (activity as ActivityMusic).mService?.resumeMusic()
-
-        }else{
-            (activity as ActivityMusic).mService?.pauseMusic()
-           }
+        binding.togglePlayPause.setOnClickListener {
+            if (binding.togglePlayPause.isChecked) {
+                (activity as ActivityMusic).mService?.startMusic()
+            } else {
+                (activity as ActivityMusic).mService?.pauseMusic()
+            }
         }
-        /*Bkav HuyNgQe:  đăng kí broadcast */
-        val intentFilter= IntentFilter(SONG_UPDATE_UI)
-        requireActivity().registerReceiver(mBroadcast,intentFilter);
-       /*Bkav HuyNgQe: update time duration */
+        /*Bkav HuyNgQe: update time duration */
         updateTimeDuration(getArgs())
-         updateTimeCurrent(getArgs())
+        updateTimeCurrent(getArgs())
         /*Bkav HuyNgQe:chuyen bai hat khi bam nut next */
         binding.nextButton.setOnClickListener {
             val index: Int = MediaPlaybackService.index
             val listSize: Int? = ((activity as ActivityMusic).mService?.listSong?.value?.size)
-            if (  (index + 1) == listSize){
+            if ((index + 1) == listSize) {
                 val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(0)
                 if (song != null) {
                     (activity as ActivityMusic).mService?.nextSongAuto(0)
-                    updateSong(song)
+                    updateUISong(song)
                     updateTimeCurrent(song)
                     updateTimeDuration(song)
                 }
-            }else{
-                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index + 1)
+            } else {
+                val song: Song? =
+                    (activity as ActivityMusic).mService?.listSong?.value?.get(index + 1)
                 (activity as ActivityMusic).mService?.nextSong(song)
                 if (song != null) {
-                    updateSong(song)
+                    updateUISong(song)
                     updateTimeCurrent(song)
                     updateTimeDuration(song)
                 }
             }
-         }
+        }
         /*Bkav HuyNgQe: lo gic back button
         *   neu thoi gian hien tai < 3s thi quay ve bai truoc
         * neu thoi gian hien tai >3 play lai bai nhac do
@@ -140,37 +146,36 @@ class MediaPlaybackFragment: Fragment() {
         binding.backButton.setOnClickListener {
             val index: Int = MediaPlaybackService.index
             val listSize: Int? = ((activity as ActivityMusic).mService?.listSong?.value?.size)
-            if(index == 0){
-                val song: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(listSize!! -1)
+            if (index == 0) {
+                val song: Song? =
+                    (activity as ActivityMusic).mService?.listSong?.value?.get(listSize!! - 1)
                 if (song != null) {
-                    (activity as ActivityMusic).mService?.nextSongAuto(listSize!! -1)
-                    updateSong(song)
+                    (activity as ActivityMusic).mService?.nextSongAuto(listSize!! - 1)
+                    updateUISong(song)
                     updateTimeCurrent(song)
                     updateTimeDuration(song)
                 }
-            }else{
-                if ((activity as ActivityMusic).mService?.getCurrentTime()!! < 3000 ){
-                    val songBack: Song? = (activity as ActivityMusic).mService?.listSong?.value?.get(index!! - 1)
-                        (activity as ActivityMusic).mService?.nextSongAuto(index - 1)
+            } else {
+                if ((activity as ActivityMusic).mService?.getCurrentTime()!! < 3000) {
+                    val songBack: Song? =
+                        (activity as ActivityMusic).mService?.listSong?.value?.get(index!! - 1)
+                    (activity as ActivityMusic).mService?.nextSongAuto(index - 1)
                     if (songBack != null) {
-                        updateSong(songBack)
+                        updateUISong(songBack)
                         updateTimeCurrent(songBack)
                         updateTimeDuration(songBack)
                     }
-                }else{
-                        (activity as ActivityMusic).mService?.nextSongAuto(index)
+                } else {
+                    (activity as ActivityMusic).mService?.nextSongAuto(index)
                 }
             }
 
         }
-
-
-
         /*Bkav HuyNgQe: lo gic nut shuffle */
         binding.imageShuffleOff.setOnClickListener {
-                binding.imageShuffleOff.visibility = View.GONE
-                binding.imageShuffleOn.visibility = View.VISIBLE
-                (activity as ActivityMusic).mService?.playRandom()
+            binding.imageShuffleOff.visibility = View.GONE
+            binding.imageShuffleOn.visibility = View.VISIBLE
+            (activity as ActivityMusic).mService?.playRandom()
         }
         /*Bkav HuyNgQe: turn off shuffle */
         binding.imageShuffleOn.setOnClickListener {
@@ -179,7 +184,7 @@ class MediaPlaybackFragment: Fragment() {
             (activity as ActivityMusic).mService?.checkShuffle = false
             (activity as ActivityMusic).mService?.mediaPlayer?.setOnCompletionListener {
                 val index: Int = MediaPlaybackService.index
-                    (activity as ActivityMusic).mService?.nextSongAuto(index + 1)
+                (activity as ActivityMusic).mService?.nextSongAuto(index + 1)
             }
         }
         /*Bkav HuyNgQe: turn on repeat */
@@ -201,65 +206,52 @@ class MediaPlaybackFragment: Fragment() {
             binding.imageRepeatOne.visibility = View.GONE
             binding.imageOffRepeat.visibility = View.VISIBLE
             (activity as ActivityMusic).mService?.checkRepeatOne = false
-            val index =MediaPlaybackService.index + 1
+            val index = MediaPlaybackService.index + 1
             (activity as ActivityMusic).mService?.nextSongAuto(index)
         }
-
-       /*HuyNgQe: xu ly su kien nut like*/
-        val dataSource = FavoriteSongsDatabase.getInstance(MyApplication.getContext()).favoriteSongsDatabaseDAO
-        val viewModelFactory = MediaPlaybackViewModelFactory(dataSource)
-        favoriteSongsViewModel = ViewModelProvider(this, viewModelFactory).get(MediaPlaybackViewModel::class.java)
-        binding.mediaPlayViewModel = favoriteSongsViewModel
+        /*HuyNgQe: xu ly su kien nut like*/
         binding.toggleLike.setOnClickListener {
-            if (binding.toggleLike.isChecked){
+            if (binding.toggleLike.isChecked) {
                 favoriteSongsViewModel.onClickLike()
             }
         }
-       /*HuyNgQe: xu ly su kien nut disLike*/
-       binding.toggleDislike.setOnClickListener {
-           favoriteSongsViewModel.onClickDislike()
-       }
-
-
-
+        /*HuyNgQe: xu ly su kien nut disLike*/
+        binding.toggleDislike.setOnClickListener {
+            favoriteSongsViewModel.onClickDislike()
+        }
         return binding.root
     }
+
     /**
      * Bkav HuyNgQe: lay doi so chuyen tu all song fragment
      */
     private fun getArgs(): Song {
-       return MediaPlaybackFragmentArgs.fromBundle(requireArguments()).song
+        return MediaPlaybackFragmentArgs.fromBundle(requireArguments()).song
     }
     /**
      * Bkav HuyNgQe: update ui music
      */
-    private fun updateSong(song: Song){
-        // set background
-        binding.mediaPlayback?.background = BitmapDrawable(resources,song.getPicture())
-        // set backgroundlandscape
-        binding.mediaPlayBackLandScape?.background = BitmapDrawable(resources,song.getPicture())
-        // set image popUp
-        binding.imageAlbumMediaPlay.setImageBitmap(song.getPicture())
-        //set name song
-        binding.textSongNameMediaPlay.text = song.songName
-        //set song
-        binding.textAuthorMediaPlay.text = song.artists
+    private fun updateUISong(song: Song) {
+        favoriteSongsViewModel.updateUiSong(song)
     }
+
     /**
      * Bkav HuyNgQe:update time duration
      */
-    fun updateTimeDuration(song:Song){
-            binding.textTimeDuration.text = (activity as ActivityMusic).mService?.timeDuration(song)
+    fun updateTimeDuration(song: Song) {
+        binding.textTimeDuration.text = (activity as ActivityMusic).mService?.timeDuration(song)
     }
+
     /**
      * Bkav HuyNgQe: update timeCurrent
      */
-    fun updateTimeCurrent(song:Song) {
+    fun updateTimeCurrent(song: Song) {
         /*Bkav HuyNgQe: update seek bar */
         binding.seekBarMediaPlay.max = song.duration!!.toInt()
-        binding.seekBarMediaPlay.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        binding.seekBarMediaPlay.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser){
+                if (fromUser) {
                     (activity as ActivityMusic).mService?.mediaPlayer?.seekTo(progress)
                 }
             }
@@ -272,7 +264,8 @@ class MediaPlaybackFragment: Fragment() {
         handler.postDelayed(object : Runnable {
             override fun run() {
                 activity?.let {
-                    binding.textTimeCurrent.text =(activity as ActivityMusic ).mService?.formatCurrentTime()
+                    binding.textTimeCurrent.text =
+                        (activity as ActivityMusic).mService?.formatCurrentTime()
                     binding.seekBarMediaPlay.progress =
                         (it as ActivityMusic).mService?.mediaPlayer!!.currentPosition
                 }
@@ -281,9 +274,19 @@ class MediaPlaybackFragment: Fragment() {
         }, 0)
     }
 
-/**
- * Bkav HuyNgQe:khi onstop thi bo dang ki broadcast
- */
+    /**
+     * Bkav HuyNgQe:khi onStart thi bo dang ki broadcast
+     */
+    override fun onStart() {
+        super.onStart()
+        /*Bkav HuyNgQe:  đăng kí broadcast */
+        val intentFilter = IntentFilter(SONG_UPDATE_UI)
+        requireActivity().registerReceiver(mBroadcast, intentFilter);
+    }
+
+    /**
+     * Bkav HuyNgQe:khi onstop thi bo dang ki broadcast
+     */
     override fun onStop() {
         super.onStop()
         requireActivity().unregisterReceiver(mBroadcast)

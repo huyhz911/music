@@ -7,7 +7,10 @@
     <data>
         <variable
             name="mediaPlayViewModel"
-            type="com.example.music.mediaPlay.MediaPlaybackViewModel" />
+            type="com.example.music.playmedia.MediaPlaybackViewModel" />
+        <variable
+            name="resources"
+            type="android.content.res.Resources" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -48,7 +51,8 @@
             android:id="@+id/mediaPlayBackLandScape"
             android:layout_width="@dimen/width_media_play_back_landScape"
             android:layout_height="@dimen/height_width_media_play_back_landScape"
-            android:background="@drawable/bg_default_album_art"
+            app:bitMap="@{mediaPlayViewModel.songPicture}"
+            app:resources="@{resources}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">

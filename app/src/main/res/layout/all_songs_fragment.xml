@@ -11,7 +11,10 @@
             type="com.example.music.database.Song" />
         <variable
             name="clickListener"
-            type="com.example.music.allSongs.SongListener" />
+            type="com.example.music.showallsongs.SongListener" />
+        <variable
+            name="allSongsViewModel"
+            type="com.example.music.showallsongs.AllSongsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,6 +74,7 @@
                     android:layout_height="@dimen/picture_Popup"
                     android:layout_marginStart="@dimen/margin_Image"
                     android:layout_marginLeft="@dimen/margin_Image"
+                    app:imageBitmap="@{allSongsViewModel.songPicture}"
                     app:layout_constraintBottom_toTopOf="@+id/guideline3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -88,7 +92,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:scrollHorizontally="true"
-                    android:text="TextView"
+                    android:text="@{allSongsViewModel.songName}"
                     app:layout_constraintEnd_toStartOf="@+id/togglePlay_Pause"
                     app:layout_constraintHorizontal_bias="0.089"
                     app:layout_constraintStart_toEndOf="@+id/imageAlbum"
@@ -102,7 +106,7 @@
                     android:layout_marginStart="@dimen/margin_start_text_author_media_play"
                     android:layout_marginLeft="@dimen/margin_start_text_author_media_play"
                     android:layout_marginBottom="@dimen/margin_bottom"
-                    android:text="TextView"
+                    android:text="@{allSongsViewModel.songAuthor}"
                     app:layout_constraintBottom_toTopOf="@+id/guideline3"
                     app:layout_constraintEnd_toStartOf="@+id/togglePlay_Pause"
                     app:layout_constraintHorizontal_bias="0.09"

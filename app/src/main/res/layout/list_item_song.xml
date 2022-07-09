@@ -9,7 +9,7 @@
             type="com.example.music.database.Song" />
         <variable
             name="clickListener"
-            type="com.example.music.allSongs.SongListener" />
+            type="com.example.music.showallsongs.SongListener" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

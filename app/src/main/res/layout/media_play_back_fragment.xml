@@ -6,14 +6,16 @@
     <data>
         <variable
             name="mediaPlayViewModel"
-            type="com.example.music.mediaPlay.MediaPlaybackViewModel" />
+            type="com.example.music.playmedia.MediaPlaybackViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mediaPlayback"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_default_album_art">
+        app:bitMap="@{mediaPlayViewModel.songPicture}"
+        app:resources="@{resources}">
         <RelativeLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
@@ -63,7 +65,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/bg_default_album_art" />
+                    app:srcCompat="@drawable/bg_default_album_art"
+                    app:imageBitmap="@{mediaPlayViewModel.songPicture}"/>
 
                 <TextView
                     android:id="@+id/textSongNameMediaPlay"
@@ -77,7 +80,7 @@
                     android:layout_toEndOf="@+id/imageAlbumMediaPlay"
                     android:layout_toRightOf="@+id/imageAlbumMediaPlay"
                     android:maxLines="1"
-                    android:text="TextView"
+                    android:text="@{mediaPlayViewModel.songName}"
                     app:layout_constraintEnd_toStartOf="@+id/imageBackListSong"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/imageAlbumMediaPlay"
@@ -101,7 +104,7 @@
                     app:layout_constraintStart_toEndOf="@+id/imageAlbumMediaPlay"
                     app:layout_constraintTop_toBottomOf="@+id/textSongNameMediaPlay"
                     app:layout_constraintVertical_bias="0.0"
-                    tools:text="TextView" />
+                    tools:text="@{mediaPlayViewModel.songAuthor}" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </RelativeLayout>

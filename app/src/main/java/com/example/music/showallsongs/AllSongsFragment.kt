@@ -68,7 +68,6 @@ class AllSongsFragment : Fragment() {
         val adapter = SongAdapter(SongListener { song ->
             val mediaPlaybackService = (activity as ActivityMusic).mService
             allSongsViewModel.insert(song)
-            mediaPlaybackService?.sendNotification(song)
             if (mediaPlaybackService != null) {
                 mediaPlaybackService.listSong.value?.let {
                     mediaPlaybackService.nextSongAuto(it.indexOf(song))
@@ -78,6 +77,7 @@ class AllSongsFragment : Fragment() {
             binding.songPopUp.visibility = View.VISIBLE
             binding.togglePlayPause.isChecked = true
             songPra = song
+            mediaPlaybackService?.sendNotification(song)
         })
         binding.listSong.adapter = adapter
 

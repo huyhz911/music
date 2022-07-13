@@ -68,17 +68,5 @@
         android:visibility="visible"
         app:srcCompat="@drawable/ic_media_play_dark" />
 
-    <ImageView
-        android:id="@+id/button_pause"
-        android:layout_width="@dimen/width_play_pause_notification"
-        android:layout_height="@dimen/width_play_pause_notification"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/marginTop_pause"
-        android:layout_marginEnd="@dimen/marginEnd_pause"
-        android:layout_marginRight="@dimen/marginRight_pause"
-        android:layout_toStartOf="@+id/next_notification"
-        android:layout_toLeftOf="@+id/next_notification"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_media_pause_dark" />
 
 </RelativeLayout>

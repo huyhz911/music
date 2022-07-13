@@ -1,6 +1,7 @@
 package com.example.music.service
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.app.PendingIntent.getActivity
 import android.app.Service
@@ -13,6 +14,7 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.music.ActivityMusic
+import com.example.music.BroadcastReceiverNotification
 import com.example.music.MyApplication
 import com.example.music.MyApplication.Companion.CHANNEL_ID
 import com.example.music.R
@@ -43,12 +45,17 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
         private const val DATA ="data"
         private const val DATA_REPEAT ="data repeat"
         private const val DATA_SHUFFLE ="data shuffle"
+        private const val ACTION_NOTIFICATION ="action notification"
+        private const val ACTION_PAUSE = 1
+        private const val ACTION_PLAY = 2
+        private const val ACTION_BACK = 3
+        private const val ACTION_NEXT = 4
     }
     init {
         listSong.value = songRepository.getSongs()
         mediaPlayer = MediaPlayer()
     }
-/**
+    /**
  * Bkav HuyNgQe:kiem tra chế độ nghe nhạc
  */
     override fun onCompletion(mp: MediaPlayer?) {
@@ -184,7 +191,43 @@ fun repeatOne() {
         super.onCreate()
     }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val action = intent?.action
+        if (index != -1){
+            handleActionMusic(action)
+        }
         return START_NOT_STICKY
+    }
+    /**
+     * Bkav HuyNgQe: su ly su kien in notification
+     */
+    private fun handleActionMusic(action: String?) {
+        val song: Song = listSong.value!!.get(index)
+        when (action) {
+            ACTION_PAUSE.toString() -> {
+                pauseMusic()
+                sendNotification(song)
+            }
+            ACTION_PLAY.toString() -> {
+                startMusic()
+                sendNotification(song)
+            }
+            ACTION_BACK.toString() -> {
+                val listSize: Int = listSong.value!!.size
+                if (index == 0) {
+                    nextSongAuto(listSize - 1)
+                } else {
+                    nextSongAuto(index - 1)
+                }
+            }
+            ACTION_NEXT.toString() -> {
+                val listSize: Int = listSong.value!!.size
+                if (index == (listSize - 1)) {
+                    nextSongAuto(0)
+                } else {
+                    nextSongAuto(index + 1)
+                }
+            }
+        }
     }
     /**
      * Bkav HuyNgQe:Gui thong tin len thong bao
@@ -192,22 +235,46 @@ fun repeatOne() {
     fun sendNotification(song: Song) {
         val intent = Intent(MyApplication.getContext(), ActivityMusic::class.java)
         val pendingIntent = getActivity(this, 0, intent, FLAG_UPDATE_CURRENT)
-        val remoteViews= RemoteViews(packageName, R.layout.song_notification)
-        remoteViews.setImageViewBitmap(R.id.imageAlbumNotification,song.getPicture())
+        val remoteViews = RemoteViews(packageName, R.layout.song_notification)
+        remoteViews.setImageViewBitmap(R.id.imageAlbumNotification, song.getPicture())
         remoteViews.setImageViewResource(R.id.back_notification, R.drawable.ic_rew_dark)
-        remoteViews.setImageViewResource(R.id.background_play_pause_button, R.drawable.ic_fab_play_btn_normal)
+        remoteViews.setImageViewResource(R.id.background_play_pause_button,
+            R.drawable.ic_fab_play_btn_normal)
         remoteViews.setImageViewResource(R.id.next_notification, R.drawable.ic_fwd_dark)
-        remoteViews.setImageViewResource(R.id.back_notification, R.drawable.ic_rew_dark)
-        remoteViews.setImageViewResource(R.id.button_play, R.drawable.ic_media_play_dark)
-        remoteViews.setImageViewResource(R.id.button_pause, R.drawable.ic_media_pause_dark)
+        if (mediaPlayer.isPlaying) {
+            remoteViews.setImageViewResource(R.id.button_play, R.drawable.ic_media_pause_dark)
+        } else {
+            remoteViews.setImageViewResource(R.id.button_play, R.drawable.ic_media_play_dark)
+        }
+        if (mediaPlayer.isPlaying) {
+            remoteViews.setOnClickPendingIntent(R.id.button_play,
+                getStatusFromNotification(ACTION_PAUSE))
+        } else {
+            remoteViews.setOnClickPendingIntent(R.id.button_play,
+                getStatusFromNotification(ACTION_PLAY))
+        }
+        remoteViews.setOnClickPendingIntent(R.id.back_notification,
+            getStatusFromNotification(ACTION_BACK))
+        remoteViews.setOnClickPendingIntent(R.id.next_notification,
+            getStatusFromNotification(ACTION_NEXT))
 
-        val notification:Notification = NotificationCompat.Builder(this, CHANNEL_ID)
+
+        val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .setCustomContentView(remoteViews)
             .build()
         startForeground(1, notification)
+    }
+    /**
+     * Bkav HuyNgQe: chuyen trang thai dang play
+     */
+    private fun getStatusFromNotification(action: Int): PendingIntent{
+        val intentNotification = Intent()
+        intentNotification.action = action.toString()
+        intentNotification.setClass(this,MediaPlaybackService::class.java)
+        return PendingIntent.getService(this, action, intentNotification, PendingIntent.FLAG_IMMUTABLE)
     }
 /**
  * Bkav HuyNgQe:gowx bound service
@@ -218,6 +285,7 @@ fun repeatOne() {
     }
 
     override fun onDestroy() {
+        stopService(intent)
         super.onDestroy()
     }
 

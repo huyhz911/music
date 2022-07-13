@@ -5,6 +5,7 @@ import android.content.*
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.Window
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -56,18 +57,18 @@ class ActivityMusic : AppCompatActivity() {
             mBound = false
         }
     }
-
-
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onStop() {
         super.onStop()
         if (mBound) {
             unbindService(connection)
             mBound=false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val intent = Intent(this, MediaPlaybackService::class.java)
+        stopService(intent)
     }
 
     private fun isServiceRunning(serviceClassName: String?): Boolean {

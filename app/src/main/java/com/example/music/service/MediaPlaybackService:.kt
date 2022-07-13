@@ -13,11 +13,8 @@ import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
-import com.example.music.ActivityMusic
-import com.example.music.BroadcastReceiverNotification
-import com.example.music.MyApplication
+import com.example.music.*
 import com.example.music.MyApplication.Companion.CHANNEL_ID
-import com.example.music.R
 import com.example.music.database.Song
 import com.example.music.database.SongRepository
 
@@ -28,12 +25,11 @@ import com.example.music.database.SongRepository
 class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
 
     val intent = Intent(SONG_UPDATE_UI)
+    var repeatStatus = RepeatStatus.REPEAT_OFF
     var songRepository = SongRepository()
     var listSong = MutableLiveData<ArrayList<Song>>()
     var mediaPlayer: MediaPlayer
     var checkShuffle :Boolean = false
-    var checkRepeatOff : Boolean = true
-    var checkRepeatOne : Boolean = false
     var checkLike : Boolean = false
     lateinit var totalDuration: String
     lateinit var currentTime: String
@@ -45,7 +41,6 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
         private const val DATA ="data"
         private const val DATA_REPEAT ="data repeat"
         private const val DATA_SHUFFLE ="data shuffle"
-        private const val ACTION_NOTIFICATION ="action notification"
         private const val ACTION_PAUSE = 1
         private const val ACTION_PLAY = 2
         private const val ACTION_BACK = 3
@@ -59,24 +54,23 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
  * Bkav HuyNgQe:kiem tra chế độ nghe nhạc
  */
     override fun onCompletion(mp: MediaPlayer?) {
+        when(repeatStatus){
+             RepeatStatus.REPEAT_OFF -> {
+                 if ((index + 1) == listSong.value?.size) {
+                     mediaPlayer.stop()
+                 } else {
+                     nextSongAuto(index + 1)
+                 }
+             }
+            RepeatStatus.REPEAT_ON ->{
+                repeatOn()
+            }
+            RepeatStatus.REPEAT_ONE -> {
+                repeatOne()
+            }
+        }
         if (checkShuffle) {
             playRandom()
-        } else {
-            if (!checkRepeatOff) {
-                repeatOn()
-            } else {
-                if (checkRepeatOne) {
-                    repeatOne()
-                } else {
-                    if (checkRepeatOff) {
-                        if ((index + 1) == listSong.value?.size) {
-                            mediaPlayer.stop()
-                        } else {
-                            nextSongAuto(index + 1)
-                        }
-                    }
-                }
-            }
         }
     }
     /**
@@ -89,7 +83,7 @@ class MediaPlaybackService(): Service(), MediaPlayer.OnCompletionListener{
  * Bkav HuyNgQe: lap lai 1 bai hat
  */
 fun repeatOne() {
-     checkRepeatOne = true
+     repeatStatus = RepeatStatus.REPEAT_ONE
     mediaPlayer.setOnCompletionListener {nextSongAuto(index) }
 }
 
@@ -99,7 +93,8 @@ fun repeatOne() {
     fun repeatOn() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.setOnCompletionListener {
-                checkRepeatOff = false
+            //    checkRepeatOff = false
+                repeatStatus = RepeatStatus.REPEAT_ON
                 if ((index + 1) == listSong.value?.size) {
                     intent.putExtra(DATA_REPEAT, (0).toString())
                     sendBroadcast(intent)
@@ -109,7 +104,7 @@ fun repeatOne() {
                 }
             }
         } else {
-            checkRepeatOff = false
+            repeatStatus = RepeatStatus.REPEAT_ON
             if ((index + 1) == listSong.value?.size) {
                 intent.putExtra(DATA_REPEAT, (0).toString())
                 sendBroadcast(intent)

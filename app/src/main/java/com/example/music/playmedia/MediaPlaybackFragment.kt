@@ -19,6 +19,7 @@ import androidx.navigation.findNavController
 import com.example.music.ActivityMusic
 import com.example.music.MyApplication
 import com.example.music.R
+import com.example.music.RepeatStatus
 import com.example.music.showallsongs.SongAdapter
 import com.example.music.showallsongs.SongListener
 import com.example.music.database.FavoriteSongsDatabase
@@ -189,23 +190,23 @@ class MediaPlaybackFragment: Fragment() {
         }
         /*Bkav HuyNgQe: turn on repeat */
         binding.imageOffRepeat.setOnClickListener {
-            (activity as ActivityMusic).mService?.checkRepeatOff = false
+            (activity as ActivityMusic).mService?.repeatStatus = RepeatStatus.REPEAT_ON
             binding.imageOffRepeat.visibility = View.GONE
             binding.imageRepeatOn.visibility = View.VISIBLE
             (activity as ActivityMusic).mService?.repeatOn()
         }
         /*Bkav HuyNgQe: turn on repeat one */
         binding.imageRepeatOn.setOnClickListener {
+            (activity as ActivityMusic).mService?.repeatStatus = RepeatStatus.REPEAT_ONE
             binding.imageRepeatOn.visibility = View.GONE
             binding.imageRepeatOne.visibility = View.VISIBLE
             (activity as ActivityMusic).mService?.repeatOne()
         }
         /*Bkav HuyNgQe: turn off repeat one */
         binding.imageRepeatOne.setOnClickListener {
-            (activity as ActivityMusic).mService?.checkRepeatOff = true
+            (activity as ActivityMusic).mService?.repeatStatus = RepeatStatus.REPEAT_OFF
             binding.imageRepeatOne.visibility = View.GONE
             binding.imageOffRepeat.visibility = View.VISIBLE
-            (activity as ActivityMusic).mService?.checkRepeatOne = false
             val index = MediaPlaybackService.index + 1
             (activity as ActivityMusic).mService?.nextSongAuto(index)
         }
